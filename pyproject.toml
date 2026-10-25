@@ -1,0 +1,11 @@
+[project]
+name = "wavelet-hepatic-vessel-segmentation"
+version = "0.1.0"
+description = "Segmentation des vaisseaux hépatiques (MSD Task08) : U-Net 2D, Wavelet-Guided U-Net et U-Net 3D"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]

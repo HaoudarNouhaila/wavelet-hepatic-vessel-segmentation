@@ -1,0 +1,27 @@
+# Évaluation finale sur l'ensemble de test et étude de la résolution.
+# L'ensemble de test n'est utilisé qu'ici, après la sélection des modèles
+# sur la validation.
+
+data_config: configs/data.yaml
+split: test
+device: auto
+num_threads: 2
+
+runs:
+  - experiments/unet2d_seed0
+  - experiments/wavelet_unet_swt_haar_seed0
+  - experiments/wavelet_unet_dwt_haar_ms_seed0
+
+# Dégradations appliquées dans le plan de coupe à l'image en HU
+# (voir src/preprocessing/degradation.py). Le masque de référence reste
+# celui d'origine.
+conditions:
+  original: {}
+  blur_1mm: {blur_sigma_mm: 1.0}
+  down_x2: {downsample: 2}
+  down_x4: {downsample: 4}
+  down_x2_noise20: {downsample: 2, noise_hu: 20}
+
+output_csv: results/metrics/{split}_per_volume.csv
+save_predictions: true
+predictions_dir: experiments/predictions/{split}

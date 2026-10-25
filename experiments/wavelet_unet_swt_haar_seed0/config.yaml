@@ -1,0 +1,55 @@
+experiment:
+  name: wavelet_unet_swt_haar
+  seed: 0
+  output_dir: experiments
+data:
+  processed_dir: data/processed
+  split_file: data/splits/split_seed42.json
+  split_key: subset
+  stats_file: data/processed/intensity_stats.json
+  wavelet_stats_file: data/processed/wavelet_stats.json
+  target_inplane_spacing: null
+model:
+  wavelet_mode: swt
+  features:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  num_classes: 3
+  dropout: 0.0
+  wavelet: haar
+loss:
+  dice_weight: 1.0
+  ce_weight: 1.0
+  include_background: false
+  batch_dice: true
+training:
+  device: auto
+  patch_size: 192
+  batch_size: 8
+  samples_per_epoch: 960
+  max_epochs: 25
+  lr: 0.001
+  weight_decay: 0.0001
+  early_stopping_patience: 7
+  min_epochs: 12
+  fg_prob: 0.67
+  num_workers: 0
+  val_batch_size: 8
+  val_slice_stride: 3
+  augmentation:
+    p_affine: 0.3
+    max_angle_deg: 15
+    scale_range:
+    - 0.85
+    - 1.15
+    p_flip: 0.5
+    intensity_scale:
+    - 0.9
+    - 1.1
+    intensity_shift: 0.1
+    p_noise: 0.15
+    noise_std: 0.05
+  num_threads: 2

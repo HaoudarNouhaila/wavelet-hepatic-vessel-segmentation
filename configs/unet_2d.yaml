@@ -1,0 +1,8 @@
+# U-Net 2D de référence : entrée = coupe CT normalisée (1 canal).
+base: base_2d.yaml
+
+experiment:
+  name: unet2d
+
+model:
+  wavelet_mode: none

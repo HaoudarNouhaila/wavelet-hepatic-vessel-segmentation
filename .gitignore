@@ -1,0 +1,28 @@
+# Données (volumineuses, à télécharger avec scripts/download_data.py)
+data/
+
+# Checkpoints et prédictions
+experiments/**/*.pt
+experiments/predictions/
+
+# Environnements et caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Fichiers système et éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.token
+kaggle.json
+
+# Sorties brutes des processus (doublons de train.log, chemins locaux)
+experiments/*.out

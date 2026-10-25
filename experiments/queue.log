@@ -1,0 +1,21 @@
+[queue 17:20:09] start wavelet_unet_dwt_haar_ms_seed0
+[queue 17:20:09] start unet2d_seed1
+[queue 20:10:31] fin wavelet_unet_dwt_haar_ms_seed0
+[queue 21:26:40] fin unet2d_seed1
+[queue 21:26:40] start evaluation seed 0
+[queue 21:26:40] start wavelet_unet_swt_haar_seed1
+[A2 01:47:51] start unet2d_seed2
+[queue 13:38:27] seed 2 abandonnée (temps de calcul), unet2d_seed2 arrêté à l'époque 3
+[A 14:50:49] fin wavelet_unet_swt_haar_seed1
+[A 14:50:49] start wavelet_unet_dwt_haar_ms_seed1
+[B 15:20:27] fin evaluation seed 0
+[B 15:20:27] eval --runs experiments/unet3d_seed0 --conditions original down_x2 down_x4
+[B 16:17:21] fin eval --runs experiments/unet3d_seed0 --conditions original down_x2 down_x4
+[B 16:17:21] eval --runs experiments/unet2d_seed1 experiments/wavelet_unet_swt_haar_seed1 --conditions original
+[B 16:40:05] fin eval --runs experiments/unet2d_seed1 experiments/wavelet_unet_swt_haar_seed1 --conditions original
+[A 17:22:57] fin wavelet_unet_dwt_haar_ms_seed1
+[B 17:23:07] eval --runs experiments/wavelet_unet_dwt_haar_ms_seed1 --conditions original
+[B 17:33:02] fin eval --runs experiments/wavelet_unet_dwt_haar_ms_seed1 --conditions original
+[B 17:33:02] eval --runs experiments/unet2d_seed1 experiments/wavelet_unet_swt_haar_seed1 experiments/wavelet_unet_dwt_haar_ms_seed1 --conditions down_x2 down_x4
+[B 18:34:14] fin eval --runs experiments/unet2d_seed1 experiments/wavelet_unet_swt_haar_seed1 experiments/wavelet_unet_dwt_haar_ms_seed1 --conditions down_x2 down_x4
+[B 18:34:14] évaluations terminées

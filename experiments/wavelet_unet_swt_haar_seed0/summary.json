@@ -1,0 +1,8 @@
+{
+  "run": "wavelet_unet_swt_haar_seed0",
+  "best_epoch": 12,
+  "best_val_dice_vessel": 0.5157156747284639,
+  "epochs_run": 19,
+  "total_time_min": 108.51626722017924,
+  "parameters": 1942899
+}

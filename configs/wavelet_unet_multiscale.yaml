@@ -1,0 +1,12 @@
+# Wavelet-Guided U-Net, injection multi-échelle : les sous-bandes de la DWT
+# de Haar au niveau k (taille H/2^k) sont concaténées à l'entrée de l'étage
+# k de l'encodeur, qui a la même résolution.
+base: base_2d.yaml
+
+experiment:
+  name: wavelet_unet_dwt_haar_ms
+
+model:
+  wavelet_mode: dwt_multilevel
+  wavelet: haar
+  wavelet_levels: 2

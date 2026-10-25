@@ -1,0 +1,10 @@
+# Wavelet-Guided U-Net, fusion en entrée : CT + sous-bandes LL, LH, HL, HH
+# de la transformée stationnaire de Haar (même résolution que la coupe).
+base: base_2d.yaml
+
+experiment:
+  name: wavelet_unet_swt_haar
+
+model:
+  wavelet_mode: swt
+  wavelet: haar

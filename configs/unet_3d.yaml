@@ -1,0 +1,41 @@
+# Extension 3D : U-Net 3D de MONAI entraîné par patches (expérience secondaire).
+# Mêmes volumes, même normalisation et même perte que les modèles 2D.
+
+experiment:
+  name: unet3d
+  seed: 0
+  output_dir: experiments
+
+data:
+  processed_dir: data/processed
+  split_file: data/splits/split_seed42.json
+  split_key: subset
+  stats_file: data/processed/intensity_stats.json
+
+model:
+  type: unet3d
+  num_classes: 3
+  channels: [16, 32, 64, 128]
+  strides: [[1, 2, 2], [2, 2, 2], [2, 2, 2]]
+  num_res_units: 1
+  norm: batch
+
+loss:
+  dice_weight: 1.0
+  ce_weight: 1.0
+  include_background: false
+  batch_dice: true
+
+training:
+  device: auto
+  patch_size: [16, 128, 128]   # (Z, H, W)
+  roi_size: [32, 256, 256]     # fenêtre glissante à l'inférence
+  batch_size: 2
+  samples_per_epoch: 160
+  max_epochs: 40
+  val_every: 2
+  lr: 0.001
+  weight_decay: 0.0001
+  early_stopping_patience: 6   # en nombre de validations (12 époques)
+  min_epochs: 6                # pas d'arrêt avant 6 validations (12 époques)
+  fg_prob: 0.67

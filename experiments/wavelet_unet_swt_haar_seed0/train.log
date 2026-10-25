@@ -1,0 +1,22 @@
+Modèle swt : 1,942,899 paramètres, 40 volumes d'entraînement, 8 de validation, device=cpu
+époque   1 | loss 1.5613 | val loss 1.4194 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0000 | 437 s *
+époque   2 | loss 1.1753 | val loss 1.0765 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0559 | 442 s
+époque   3 | loss 1.0276 | val loss 1.0188 | Dice vaisseaux 0.3693 | Dice tumeurs 0.0626 | 373 s *
+époque   4 | loss 0.8735 | val loss 1.0314 | Dice vaisseaux 0.1441 | Dice tumeurs 0.0525 | 309 s
+époque   5 | loss 0.7499 | val loss 0.9434 | Dice vaisseaux 0.3426 | Dice tumeurs 0.0633 | 304 s
+époque   6 | loss 0.7151 | val loss 0.8677 | Dice vaisseaux 0.3967 | Dice tumeurs 0.0672 | 316 s *
+époque   7 | loss 0.6644 | val loss 0.8107 | Dice vaisseaux 0.4525 | Dice tumeurs 0.0941 | 331 s *
+époque   8 | loss 0.6501 | val loss 0.7850 | Dice vaisseaux 0.4306 | Dice tumeurs 0.1906 | 331 s
+époque   9 | loss 0.6335 | val loss 0.8147 | Dice vaisseaux 0.4134 | Dice tumeurs 0.1115 | 321 s
+époque  10 | loss 0.6158 | val loss 0.7497 | Dice vaisseaux 0.4983 | Dice tumeurs 0.1379 | 333 s *
+époque  11 | loss 0.5694 | val loss 0.7512 | Dice vaisseaux 0.4546 | Dice tumeurs 0.1646 | 340 s
+époque  12 | loss 0.5684 | val loss 0.7233 | Dice vaisseaux 0.5157 | Dice tumeurs 0.1536 | 355 s *
+époque  13 | loss 0.5555 | val loss 0.7644 | Dice vaisseaux 0.4508 | Dice tumeurs 0.1360 | 367 s
+époque  14 | loss 0.5523 | val loss 0.7181 | Dice vaisseaux 0.4776 | Dice tumeurs 0.2050 | 331 s
+époque  15 | loss 0.5236 | val loss 0.7523 | Dice vaisseaux 0.4406 | Dice tumeurs 0.1613 | 330 s
+époque  16 | loss 0.5282 | val loss 0.7903 | Dice vaisseaux 0.3751 | Dice tumeurs 0.1632 | 334 s
+époque  17 | loss 0.5158 | val loss 0.7090 | Dice vaisseaux 0.4857 | Dice tumeurs 0.1835 | 329 s
+époque  18 | loss 0.5186 | val loss 0.7039 | Dice vaisseaux 0.5018 | Dice tumeurs 0.2018 | 334 s
+époque  19 | loss 0.4999 | val loss 0.7079 | Dice vaisseaux 0.5093 | Dice tumeurs 0.1717 | 293 s
+Early stopping à l'époque 19 (meilleure époque : 12)
+Terminé : {'run': 'wavelet_unet_swt_haar_seed0', 'best_epoch': 12, 'best_val_dice_vessel': 0.5157156747284639, 'epochs_run': 19, 'total_time_min': 108.51626722017924, 'parameters': 1942899}

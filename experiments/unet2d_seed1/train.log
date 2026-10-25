@@ -1,0 +1,28 @@
+Modèle none : 1,942,323 paramètres, 40 volumes d'entraînement, 8 de validation, device=cpu
+époque   1 | loss 1.9084 | val loss 1.4760 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0000 | 342 s *
+époque   2 | loss 1.3791 | val loss 1.1775 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0464 | 345 s
+époque   3 | loss 1.1192 | val loss 1.0637 | Dice vaisseaux 0.2710 | Dice tumeurs 0.0554 | 321 s *
+époque   4 | loss 0.9485 | val loss 1.0000 | Dice vaisseaux 0.2986 | Dice tumeurs 0.0554 | 337 s *
+époque   5 | loss 0.8673 | val loss 1.0125 | Dice vaisseaux 0.1408 | Dice tumeurs 0.0460 | 322 s
+époque   6 | loss 0.7952 | val loss 0.9106 | Dice vaisseaux 0.3467 | Dice tumeurs 0.0020 | 324 s *
+époque   7 | loss 0.7829 | val loss 0.8829 | Dice vaisseaux 0.3441 | Dice tumeurs 0.0996 | 334 s
+époque   8 | loss 0.7187 | val loss 0.9021 | Dice vaisseaux 0.2909 | Dice tumeurs 0.0237 | 333 s
+époque   9 | loss 0.6978 | val loss 0.8977 | Dice vaisseaux 0.2191 | Dice tumeurs 0.1143 | 329 s
+époque  10 | loss 0.7159 | val loss 0.8490 | Dice vaisseaux 0.3386 | Dice tumeurs 0.1297 | 339 s
+époque  11 | loss 0.6626 | val loss 0.8275 | Dice vaisseaux 0.3666 | Dice tumeurs 0.1009 | 338 s *
+époque  12 | loss 0.6180 | val loss 0.8395 | Dice vaisseaux 0.3559 | Dice tumeurs 0.1280 | 323 s
+époque  13 | loss 0.6003 | val loss 0.8232 | Dice vaisseaux 0.3624 | Dice tumeurs 0.1242 | 321 s
+époque  14 | loss 0.6108 | val loss 0.7923 | Dice vaisseaux 0.4116 | Dice tumeurs 0.1367 | 341 s *
+époque  15 | loss 0.5777 | val loss 0.7586 | Dice vaisseaux 0.4542 | Dice tumeurs 0.1497 | 323 s *
+époque  16 | loss 0.5867 | val loss 0.7649 | Dice vaisseaux 0.4665 | Dice tumeurs 0.1218 | 324 s *
+époque  17 | loss 0.5462 | val loss 0.7407 | Dice vaisseaux 0.4585 | Dice tumeurs 0.1624 | 4388 s
+époque  18 | loss 0.5324 | val loss 0.7433 | Dice vaisseaux 0.4755 | Dice tumeurs 0.1664 | 629 s *
+époque  19 | loss 0.5483 | val loss 0.7601 | Dice vaisseaux 0.4417 | Dice tumeurs 0.1664 | 629 s
+époque  20 | loss 0.5292 | val loss 0.7401 | Dice vaisseaux 0.4743 | Dice tumeurs 0.1559 | 643 s
+époque  21 | loss 0.5094 | val loss 0.7434 | Dice vaisseaux 0.4385 | Dice tumeurs 0.1997 | 635 s
+époque  22 | loss 0.5176 | val loss 0.7347 | Dice vaisseaux 0.4621 | Dice tumeurs 0.1652 | 638 s
+époque  23 | loss 0.5112 | val loss 0.7522 | Dice vaisseaux 0.4354 | Dice tumeurs 0.1691 | 640 s
+époque  24 | loss 0.4973 | val loss 0.7348 | Dice vaisseaux 0.4645 | Dice tumeurs 0.1725 | 636 s
+époque  25 | loss 0.4970 | val loss 0.7278 | Dice vaisseaux 0.4724 | Dice tumeurs 0.1733 | 642 s
+Early stopping à l'époque 25 (meilleure époque : 18)
+Terminé : {'run': 'unet2d_seed1', 'best_epoch': 18, 'best_val_dice_vessel': 0.4754510991862151, 'epochs_run': 25, 'total_time_min': 246.31241559584936, 'parameters': 1942323}

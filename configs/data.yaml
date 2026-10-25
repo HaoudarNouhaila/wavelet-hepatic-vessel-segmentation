@@ -1,0 +1,39 @@
+# Données : téléchargement, séparation et prétraitement.
+
+dataset:
+  url: https://msd-for-monai.s3-us-west-2.amazonaws.com/Task08_HepaticVessel.tar
+  raw_dir: data/raw
+  index_file: data/task08_tar_index.json
+
+split:
+  file: data/splits/split_seed42.json
+  seed: 42
+  fractions: [0.70, 0.15, 0.15]
+  # Sous-ensemble réellement téléchargé et utilisé (premiers cas de chaque
+  # ensemble, dont l'ordre est déjà aléatoire). Augmenter ces valeurs sur GPU.
+  subset_sizes:
+    train: 40
+    val: 8
+    test: 20
+
+inspection:
+  header_survey_csv: results/metrics/dataset_headers.csv
+  inspection_csv: results/metrics/dataset_inspection.csv
+  figures_dir: results/figures/dataset
+
+preprocessing:
+  processed_dir: data/processed
+  stats_file: data/processed/intensity_stats.json
+  wavelet_stats_file: data/processed/wavelet_stats.json
+  # null : pas de rééchantillonnage dans le plan (voir docs/donnees.md)
+  target_inplane_spacing: null
+  intensity_percentiles: [0.5, 99.5]
+  max_fg_voxels_per_case: 200000
+  max_fg_coords: 20000
+  # Caractéristiques ondelettes dont les statistiques sont estimées sur
+  # l'ensemble d'entraînement.
+  wavelet_features:
+    - {mode: swt, wavelet: haar, levels: 1}
+    - {mode: swt, wavelet: db2, levels: 1}
+    - {mode: dwt_multilevel, wavelet: haar, levels: 2}
+  wavelet_stats_slices_per_case: 8

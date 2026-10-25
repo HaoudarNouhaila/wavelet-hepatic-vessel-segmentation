@@ -1,0 +1,20 @@
+﻿Système : Windows-10-10.0.22631-SP0
+Python : 3.10.10
+  torch       2.8.0+cpu
+  monai       1.6.1
+  numpy       2.2.6
+  scipy       1.15.3
+  pandas      2.3.3
+  sklearn     1.7.1
+  skimage     0.25.2
+  pywt        1.8.0
+  nibabel     5.4.2
+  SimpleITK   2.5.6
+  matplotlib  3.10.7
+  seaborn     0.13.2
+  yaml        6.0.3
+  pytest      9.1.1
+CUDA disponible : False
+Threads CPU utilisés par PyTorch : 4 (coeurs logiques : 8)
+RAM : 15.7 Go au total, 3.3 Go disponibles
+Espace disque libre : 23.2 Go

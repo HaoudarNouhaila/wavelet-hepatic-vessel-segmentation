@@ -1,0 +1,29 @@
+# Versions testées avec Python 3.10 (Windows 11, CPU) en octobre 2026.
+# Sur une machine sans GPU, installer d'abord torch depuis l'index CPU :
+#   pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+# Sur Google Colab ou Kaggle, la version de torch déjà installée suffit.
+
+torch==2.8.0
+monai==1.6.1
+
+numpy==2.2.6
+scipy==1.15.3
+pandas==2.3.3
+scikit-learn==1.7.1
+scikit-image==0.25.2
+PyWavelets==1.8.0
+
+nibabel==5.4.2
+SimpleITK==2.5.6
+
+matplotlib==3.10.7
+seaborn==0.13.2
+
+PyYAML==6.0.3
+tqdm==4.67.1
+pytest==9.1.1
+
+# Exécution des notebooks
+ipykernel==7.2.0
+nbconvert==7.17.1
+nbformat==5.10.4
