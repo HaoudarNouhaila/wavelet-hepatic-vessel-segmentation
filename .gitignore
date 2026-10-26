@@ -1,5 +1,5 @@
 # Données (volumineuses, à télécharger avec scripts/download_data.py)
-data/
+/data/
 
 # Checkpoints et prédictions
 experiments/**/*.pt
