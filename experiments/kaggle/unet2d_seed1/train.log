@@ -1,0 +1,23 @@
+Modèle none : 1,942,323 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.6004 | val loss 1.2036 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0877 | 54 s *
+époque   2 | loss 0.9422 | val loss 0.9629 | Dice vaisseaux 0.1744 | Dice tumeurs 0.1708 | 52 s *
+époque   3 | loss 0.7267 | val loss 0.7913 | Dice vaisseaux 0.4159 | Dice tumeurs 0.2099 | 52 s *
+époque   4 | loss 0.6249 | val loss 0.7587 | Dice vaisseaux 0.3958 | Dice tumeurs 0.2360 | 52 s
+époque   5 | loss 0.5771 | val loss 0.6806 | Dice vaisseaux 0.4989 | Dice tumeurs 0.2866 | 52 s *
+époque   6 | loss 0.5556 | val loss 0.6634 | Dice vaisseaux 0.5123 | Dice tumeurs 0.2769 | 52 s *
+époque   7 | loss 0.5186 | val loss 0.6400 | Dice vaisseaux 0.5380 | Dice tumeurs 0.3068 | 53 s *
+époque   8 | loss 0.5143 | val loss 0.7905 | Dice vaisseaux 0.3763 | Dice tumeurs 0.1984 | 53 s
+époque   9 | loss 0.4834 | val loss 0.6436 | Dice vaisseaux 0.5326 | Dice tumeurs 0.2901 | 53 s
+époque  10 | loss 0.4660 | val loss 0.6100 | Dice vaisseaux 0.5418 | Dice tumeurs 0.3416 | 53 s *
+époque  11 | loss 0.4529 | val loss 0.6218 | Dice vaisseaux 0.5035 | Dice tumeurs 0.3573 | 53 s
+époque  12 | loss 0.4572 | val loss 0.6500 | Dice vaisseaux 0.4540 | Dice tumeurs 0.3496 | 53 s
+époque  13 | loss 0.4356 | val loss 0.7141 | Dice vaisseaux 0.3172 | Dice tumeurs 0.3479 | 53 s
+époque  14 | loss 0.4381 | val loss 0.6681 | Dice vaisseaux 0.4244 | Dice tumeurs 0.3335 | 53 s
+époque  15 | loss 0.4125 | val loss 0.6312 | Dice vaisseaux 0.5016 | Dice tumeurs 0.3381 | 53 s
+époque  16 | loss 0.4194 | val loss 0.6407 | Dice vaisseaux 0.4632 | Dice tumeurs 0.3502 | 53 s
+époque  17 | loss 0.3967 | val loss 0.6090 | Dice vaisseaux 0.4830 | Dice tumeurs 0.3907 | 53 s
+époque  18 | loss 0.3988 | val loss 0.6402 | Dice vaisseaux 0.4509 | Dice tumeurs 0.3641 | 53 s
+époque  19 | loss 0.3802 | val loss 0.6505 | Dice vaisseaux 0.4612 | Dice tumeurs 0.3194 | 53 s
+époque  20 | loss 0.3783 | val loss 0.6552 | Dice vaisseaux 0.4291 | Dice tumeurs 0.3638 | 53 s
+Early stopping à l'époque 20 (meilleure époque : 10)
+Terminé : {'run': 'unet2d_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5417844994022881, 'epochs_run': 20, 'total_time_min': 17.573279476165773, 'parameters': 1942323, 'stopped_by_time_limit': False}

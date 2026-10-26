@@ -1,0 +1,23 @@
+Modèle dwt_multilevel : 1,945,779 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.1057 | val loss 1.0161 | Dice vaisseaux 0.0568 | Dice tumeurs 0.1241 | 65 s *
+époque   2 | loss 0.6866 | val loss 0.7798 | Dice vaisseaux 0.3655 | Dice tumeurs 0.2642 | 63 s *
+époque   3 | loss 0.6020 | val loss 0.7960 | Dice vaisseaux 0.4214 | Dice tumeurs 0.1873 | 63 s *
+époque   4 | loss 0.5839 | val loss 0.6654 | Dice vaisseaux 0.5069 | Dice tumeurs 0.2998 | 63 s *
+époque   5 | loss 0.5522 | val loss 0.6597 | Dice vaisseaux 0.4999 | Dice tumeurs 0.2902 | 63 s
+époque   6 | loss 0.5192 | val loss 0.7254 | Dice vaisseaux 0.3701 | Dice tumeurs 0.2947 | 63 s
+époque   7 | loss 0.4927 | val loss 0.6449 | Dice vaisseaux 0.5201 | Dice tumeurs 0.2838 | 64 s *
+époque   8 | loss 0.4941 | val loss 0.6887 | Dice vaisseaux 0.4777 | Dice tumeurs 0.2514 | 64 s
+époque   9 | loss 0.4678 | val loss 0.6764 | Dice vaisseaux 0.4314 | Dice tumeurs 0.3193 | 64 s
+époque  10 | loss 0.4546 | val loss 0.6092 | Dice vaisseaux 0.5300 | Dice tumeurs 0.3486 | 63 s *
+époque  11 | loss 0.4432 | val loss 0.6327 | Dice vaisseaux 0.4555 | Dice tumeurs 0.3678 | 64 s
+époque  12 | loss 0.4395 | val loss 0.7363 | Dice vaisseaux 0.3210 | Dice tumeurs 0.2949 | 65 s
+époque  13 | loss 0.4261 | val loss 0.7218 | Dice vaisseaux 0.2914 | Dice tumeurs 0.3635 | 64 s
+époque  14 | loss 0.4321 | val loss 0.6941 | Dice vaisseaux 0.3586 | Dice tumeurs 0.3536 | 64 s
+époque  15 | loss 0.4049 | val loss 0.7174 | Dice vaisseaux 0.3413 | Dice tumeurs 0.3374 | 64 s
+époque  16 | loss 0.4254 | val loss 0.6745 | Dice vaisseaux 0.4094 | Dice tumeurs 0.3629 | 64 s
+époque  17 | loss 0.3990 | val loss 0.6409 | Dice vaisseaux 0.4263 | Dice tumeurs 0.3959 | 64 s
+époque  18 | loss 0.3921 | val loss 0.6886 | Dice vaisseaux 0.3550 | Dice tumeurs 0.3624 | 64 s
+époque  19 | loss 0.3776 | val loss 0.6689 | Dice vaisseaux 0.3980 | Dice tumeurs 0.3644 | 64 s
+époque  20 | loss 0.3743 | val loss 0.7379 | Dice vaisseaux 0.2698 | Dice tumeurs 0.3632 | 64 s
+Early stopping à l'époque 20 (meilleure époque : 10)
+Terminé : {'run': 'wavelet_unet_dwt_haar_ms_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5300367839068534, 'epochs_run': 20, 'total_time_min': 21.302683516343436, 'parameters': 1945779, 'stopped_by_time_limit': False}

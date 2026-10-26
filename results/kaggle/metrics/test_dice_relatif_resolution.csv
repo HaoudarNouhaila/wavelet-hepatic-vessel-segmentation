@@ -1,0 +1,5 @@
+model,blur_1mm,down_x2,down_x2_noise20,down_x4,original
+unet2d,0.968,0.986,0.941,0.933,1.0
+unet3d,0.962,0.989,0.947,0.926,1.0
+wavelet_unet_dwt_haar_ms,0.905,0.953,0.928,0.845,1.0
+wavelet_unet_swt_haar,0.96,0.992,0.937,0.874,1.0

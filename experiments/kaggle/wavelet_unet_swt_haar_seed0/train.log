@@ -1,0 +1,18 @@
+Modèle swt : 1,942,899 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.3169 | val loss 1.0785 | Dice vaisseaux 0.1932 | Dice tumeurs 0.1118 | 83 s *
+époque   2 | loss 0.8202 | val loss 0.8511 | Dice vaisseaux 0.3489 | Dice tumeurs 0.2186 | 83 s *
+époque   3 | loss 0.6518 | val loss 0.8140 | Dice vaisseaux 0.3487 | Dice tumeurs 0.2099 | 83 s
+époque   4 | loss 0.6103 | val loss 0.7516 | Dice vaisseaux 0.4532 | Dice tumeurs 0.2230 | 83 s *
+époque   5 | loss 0.5758 | val loss 0.6593 | Dice vaisseaux 0.5386 | Dice tumeurs 0.2794 | 83 s *
+époque   6 | loss 0.5266 | val loss 0.6505 | Dice vaisseaux 0.5233 | Dice tumeurs 0.3083 | 83 s
+époque   7 | loss 0.5191 | val loss 0.6610 | Dice vaisseaux 0.4777 | Dice tumeurs 0.3064 | 83 s
+époque   8 | loss 0.4943 | val loss 0.6762 | Dice vaisseaux 0.5177 | Dice tumeurs 0.2582 | 83 s
+époque   9 | loss 0.4776 | val loss 0.6455 | Dice vaisseaux 0.5066 | Dice tumeurs 0.2931 | 83 s
+époque  10 | loss 0.4721 | val loss 0.6331 | Dice vaisseaux 0.4860 | Dice tumeurs 0.3528 | 83 s
+époque  11 | loss 0.4739 | val loss 0.7113 | Dice vaisseaux 0.3674 | Dice tumeurs 0.3177 | 84 s
+époque  12 | loss 0.4440 | val loss 0.6994 | Dice vaisseaux 0.3241 | Dice tumeurs 0.3791 | 84 s
+époque  13 | loss 0.4234 | val loss 0.7508 | Dice vaisseaux 0.3031 | Dice tumeurs 0.3054 | 83 s
+époque  14 | loss 0.4236 | val loss 0.6298 | Dice vaisseaux 0.4873 | Dice tumeurs 0.3447 | 83 s
+époque  15 | loss 0.4018 | val loss 0.7609 | Dice vaisseaux 0.3349 | Dice tumeurs 0.2550 | 83 s
+Early stopping à l'époque 15 (meilleure époque : 5)
+Terminé : {'run': 'wavelet_unet_swt_haar_seed0', 'best_epoch': 5, 'best_val_dice_vessel': 0.5386237043488281, 'epochs_run': 15, 'total_time_min': 20.812848297754922, 'parameters': 1942899, 'stopped_by_time_limit': False}

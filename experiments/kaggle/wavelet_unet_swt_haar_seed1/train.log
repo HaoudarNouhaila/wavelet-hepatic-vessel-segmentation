@@ -1,0 +1,23 @@
+Modèle swt : 1,942,899 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.3012 | val loss 1.0668 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0822 | 83 s *
+époque   2 | loss 0.8413 | val loss 0.8448 | Dice vaisseaux 0.4405 | Dice tumeurs 0.2169 | 83 s *
+époque   3 | loss 0.6324 | val loss 0.7448 | Dice vaisseaux 0.4090 | Dice tumeurs 0.2752 | 83 s
+époque   4 | loss 0.5786 | val loss 0.7083 | Dice vaisseaux 0.4960 | Dice tumeurs 0.2288 | 84 s *
+époque   5 | loss 0.5409 | val loss 0.7112 | Dice vaisseaux 0.4281 | Dice tumeurs 0.2677 | 84 s
+époque   6 | loss 0.5192 | val loss 0.6842 | Dice vaisseaux 0.4535 | Dice tumeurs 0.2924 | 83 s
+époque   7 | loss 0.4957 | val loss 0.6497 | Dice vaisseaux 0.5125 | Dice tumeurs 0.2997 | 83 s *
+époque   8 | loss 0.4919 | val loss 0.7035 | Dice vaisseaux 0.4786 | Dice tumeurs 0.2434 | 82 s
+époque   9 | loss 0.4673 | val loss 0.7120 | Dice vaisseaux 0.3576 | Dice tumeurs 0.3173 | 83 s
+époque  10 | loss 0.4505 | val loss 0.6186 | Dice vaisseaux 0.5283 | Dice tumeurs 0.3127 | 83 s *
+époque  11 | loss 0.4464 | val loss 0.6743 | Dice vaisseaux 0.4031 | Dice tumeurs 0.3409 | 83 s
+époque  12 | loss 0.4409 | val loss 0.6556 | Dice vaisseaux 0.4527 | Dice tumeurs 0.3284 | 83 s
+époque  13 | loss 0.4293 | val loss 0.6762 | Dice vaisseaux 0.3983 | Dice tumeurs 0.3400 | 83 s
+époque  14 | loss 0.4303 | val loss 0.7011 | Dice vaisseaux 0.3544 | Dice tumeurs 0.3520 | 83 s
+époque  15 | loss 0.4023 | val loss 0.6424 | Dice vaisseaux 0.4766 | Dice tumeurs 0.3434 | 83 s
+époque  16 | loss 0.4227 | val loss 0.6872 | Dice vaisseaux 0.4290 | Dice tumeurs 0.3030 | 83 s
+époque  17 | loss 0.3975 | val loss 0.6700 | Dice vaisseaux 0.3686 | Dice tumeurs 0.3818 | 83 s
+époque  18 | loss 0.3916 | val loss 0.7153 | Dice vaisseaux 0.3411 | Dice tumeurs 0.3196 | 83 s
+époque  19 | loss 0.3768 | val loss 0.6377 | Dice vaisseaux 0.4921 | Dice tumeurs 0.3215 | 83 s
+époque  20 | loss 0.3753 | val loss 0.7539 | Dice vaisseaux 0.2740 | Dice tumeurs 0.3170 | 84 s
+Early stopping à l'époque 20 (meilleure époque : 10)
+Terminé : {'run': 'wavelet_unet_swt_haar_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5282718445070986, 'epochs_run': 20, 'total_time_min': 27.697710637251536, 'parameters': 1942899, 'stopped_by_time_limit': False}

@@ -1,0 +1,9 @@
+{
+  "run": "unet2d_seed2",
+  "best_epoch": 16,
+  "best_val_dice_vessel": 0.4408728502665901,
+  "epochs_run": 26,
+  "total_time_min": 22.887382864952087,
+  "parameters": 1942323,
+  "stopped_by_time_limit": false
+}

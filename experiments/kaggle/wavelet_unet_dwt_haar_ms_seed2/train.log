@@ -1,0 +1,20 @@
+Modèle dwt_multilevel : 1,945,779 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.1888 | val loss 0.9639 | Dice vaisseaux 0.3756 | Dice tumeurs 0.1786 | 65 s *
+époque   2 | loss 0.7422 | val loss 0.8599 | Dice vaisseaux 0.3501 | Dice tumeurs 0.1779 | 64 s
+époque   3 | loss 0.6506 | val loss 0.8129 | Dice vaisseaux 0.4367 | Dice tumeurs 0.0883 | 64 s *
+époque   4 | loss 0.5795 | val loss 0.6791 | Dice vaisseaux 0.4741 | Dice tumeurs 0.2998 | 63 s *
+époque   5 | loss 0.5387 | val loss 0.7468 | Dice vaisseaux 0.4162 | Dice tumeurs 0.2353 | 63 s
+époque   6 | loss 0.5238 | val loss 0.7170 | Dice vaisseaux 0.3823 | Dice tumeurs 0.2991 | 63 s
+époque   7 | loss 0.5104 | val loss 0.6422 | Dice vaisseaux 0.5161 | Dice tumeurs 0.3080 | 63 s *
+époque   8 | loss 0.4752 | val loss 0.7989 | Dice vaisseaux 0.2550 | Dice tumeurs 0.2671 | 64 s
+époque   9 | loss 0.4630 | val loss 0.7264 | Dice vaisseaux 0.3852 | Dice tumeurs 0.2595 | 63 s
+époque  10 | loss 0.4420 | val loss 0.7874 | Dice vaisseaux 0.2208 | Dice tumeurs 0.3186 | 64 s
+époque  11 | loss 0.4477 | val loss 0.6708 | Dice vaisseaux 0.4355 | Dice tumeurs 0.3405 | 64 s
+époque  12 | loss 0.4503 | val loss 0.7167 | Dice vaisseaux 0.3325 | Dice tumeurs 0.3231 | 64 s
+époque  13 | loss 0.4291 | val loss 0.7873 | Dice vaisseaux 0.2495 | Dice tumeurs 0.2906 | 64 s
+époque  14 | loss 0.4173 | val loss 0.6860 | Dice vaisseaux 0.3842 | Dice tumeurs 0.3314 | 65 s
+époque  15 | loss 0.4023 | val loss 0.8018 | Dice vaisseaux 0.2391 | Dice tumeurs 0.2695 | 64 s
+époque  16 | loss 0.3962 | val loss 0.6753 | Dice vaisseaux 0.4340 | Dice tumeurs 0.3121 | 64 s
+époque  17 | loss 0.4033 | val loss 0.7390 | Dice vaisseaux 0.2727 | Dice tumeurs 0.3496 | 64 s
+Early stopping à l'époque 17 (meilleure époque : 7)
+Terminé : {'run': 'wavelet_unet_dwt_haar_ms_seed2', 'best_epoch': 7, 'best_val_dice_vessel': 0.5160534852092061, 'epochs_run': 17, 'total_time_min': 18.11031575202942, 'parameters': 1945779, 'stopped_by_time_limit': False}

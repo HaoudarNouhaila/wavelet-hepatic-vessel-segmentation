@@ -1,0 +1,42 @@
+[ 0.00 h] étapes : ['data'], seeds : [0, 1, 2]
+[ 0.00 h] $ scripts/download_data.py --config configs/kaggle/data.yaml --from-local
+[ 0.00 h] $ scripts/prepare_data.py --config configs/kaggle/data.yaml --workers 4
+[ 0.09 h] fin
+[ 0.09 h] étapes : ['train'], seeds : [0, 1, 2]
+[ 0.09 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 373
+[ 0.35 h] unet2d_seed0 terminé (code 0)
+[ 0.35 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 357
+[ 0.70 h] wavelet_unet_swt_haar_seed0 terminé (code 0)
+[ 0.70 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 336
+[ 0.99 h] wavelet_unet_dwt_haar_ms_seed0 terminé (code 0)
+[ 0.99 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 319
+[ 1.28 h] unet2d_seed1 terminé (code 0)
+[ 1.28 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 301
+[ 1.75 h] wavelet_unet_swt_haar_seed1 terminé (code 0)
+[ 1.75 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 273
+[ 2.10 h] wavelet_unet_dwt_haar_ms_seed1 terminé (code 0)
+[ 2.10 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 252
+[ 2.49 h] unet2d_seed2 terminé (code 0)
+[ 2.49 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 229
+[ 2.88 h] wavelet_unet_swt_haar_seed2 terminé (code 0)
+[ 2.88 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 205
+[ 3.18 h] wavelet_unet_dwt_haar_ms_seed2 terminé (code 0)
+[ 3.18 h] $ scripts/train.py --config configs/unet_3d.yaml --override configs/kaggle/gpu_3d.yaml --seed 0 --max-minutes 247
+[ 4.61 h] unet3d_seed0 terminé (code 0)
+[ 4.61 h] fin
+[ 4.61 h] étapes : ['evaluate'], seeds : [0, 1, 2]
+[ 4.61 h] évaluation original : 10 modèles
+[ 4.61 h] évaluation down_x2 : 10 modèles
+[ 4.61 h] évaluation down_x4 : 10 modèles
+[ 4.61 h] évaluation blur_1mm : 4 modèles
+[ 4.98 h] évaluation blur_1mm terminée (code 0)
+[ 4.98 h] évaluation down_x2_noise20 : 4 modèles
+[ 5.51 h] évaluation down_x2_noise20 terminée (code 0)
+[ 5.55 h] évaluation original terminée (code 0)
+[ 5.65 h] évaluation down_x2 terminée (code 0)
+[ 5.65 h] évaluation down_x4 terminée (code 0)
+[ 5.65 h] fin
+[ 5.65 h] étapes : ['analyze'], seeds : [0, 1, 2]
+[ 5.65 h] 3496 lignes fusionnées dans /kaggle/working/project/results/kaggle/metrics/test_per_volume.csv
+[ 5.65 h] $ scripts/analyze_results.py --split test --eval-config configs/kaggle/evaluation.yaml --results-dir results/kaggle --experiments-dir experiments/kaggle
+[ 5.66 h] fin

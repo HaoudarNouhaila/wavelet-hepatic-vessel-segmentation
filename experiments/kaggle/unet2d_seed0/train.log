@@ -1,0 +1,21 @@
+Modèle none : 1,942,323 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+époque   1 | loss 1.1368 | val loss 0.9631 | Dice vaisseaux 0.3650 | Dice tumeurs 0.1793 | 52 s *
+époque   2 | loss 0.7522 | val loss 0.8620 | Dice vaisseaux 0.3427 | Dice tumeurs 0.1729 | 50 s
+époque   3 | loss 0.6240 | val loss 0.7798 | Dice vaisseaux 0.3718 | Dice tumeurs 0.2495 | 53 s *
+époque   4 | loss 0.5755 | val loss 0.7421 | Dice vaisseaux 0.4186 | Dice tumeurs 0.2301 | 52 s *
+époque   5 | loss 0.5432 | val loss 0.7393 | Dice vaisseaux 0.3933 | Dice tumeurs 0.2659 | 53 s
+époque   6 | loss 0.4989 | val loss 0.7589 | Dice vaisseaux 0.2986 | Dice tumeurs 0.3247 | 53 s
+époque   7 | loss 0.4908 | val loss 0.7137 | Dice vaisseaux 0.3198 | Dice tumeurs 0.3544 | 53 s
+époque   8 | loss 0.4724 | val loss 0.6247 | Dice vaisseaux 0.5325 | Dice tumeurs 0.3299 | 53 s *
+époque   9 | loss 0.4510 | val loss 0.6409 | Dice vaisseaux 0.4889 | Dice tumeurs 0.3236 | 53 s
+époque  10 | loss 0.4481 | val loss 0.6003 | Dice vaisseaux 0.5263 | Dice tumeurs 0.3675 | 53 s
+époque  11 | loss 0.4355 | val loss 0.6589 | Dice vaisseaux 0.3536 | Dice tumeurs 0.4468 | 53 s
+époque  12 | loss 0.4243 | val loss 0.6171 | Dice vaisseaux 0.4674 | Dice tumeurs 0.3827 | 53 s
+époque  13 | loss 0.4103 | val loss 0.6872 | Dice vaisseaux 0.3799 | Dice tumeurs 0.3480 | 53 s
+époque  14 | loss 0.4038 | val loss 0.6407 | Dice vaisseaux 0.4817 | Dice tumeurs 0.3232 | 53 s
+époque  15 | loss 0.3879 | val loss 0.7719 | Dice vaisseaux 0.2561 | Dice tumeurs 0.3029 | 53 s
+époque  16 | loss 0.3991 | val loss 0.6611 | Dice vaisseaux 0.4358 | Dice tumeurs 0.3490 | 53 s
+époque  17 | loss 0.3850 | val loss 0.7103 | Dice vaisseaux 0.2477 | Dice tumeurs 0.4313 | 53 s
+époque  18 | loss 0.3807 | val loss 0.5886 | Dice vaisseaux 0.5014 | Dice tumeurs 0.4178 | 53 s
+Early stopping à l'époque 18 (meilleure époque : 8)
+Terminé : {'run': 'unet2d_seed0', 'best_epoch': 8, 'best_val_dice_vessel': 0.532545066110501, 'epochs_run': 18, 'total_time_min': 15.785964488983154, 'parameters': 1942323, 'stopped_by_time_limit': False}

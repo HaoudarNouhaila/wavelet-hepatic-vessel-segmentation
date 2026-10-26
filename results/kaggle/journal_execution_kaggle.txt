@@ -1,0 +1,530 @@
+Journal de l'exécution du notebook 05 sur Kaggle (GPU Tesla T4), version 2 du noyau privé,
+26/10/2026. Temps en secondes depuis le début de la session. Barres de progression retirées.
+
+     10 s  Mon Oct 26 00:51:26 2026
+     10 s  +-----------------------------------------------------------------------------------------+
+     10 s  | NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |
+     10 s  +-----------------------------------------+------------------------+----------------------+
+     10 s  | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+     10 s  | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+     10 s  |                                         |                        |               MIG M. |
+     10 s  |=========================================+========================+======================|
+     10 s  |   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |
+     10 s  | N/A   42C    P8             10W /   70W |       0MiB /  15360MiB |      0%      Default |
+     10 s  |                                         |                        |                  N/A |
+     10 s  +-----------------------------------------+------------------------+----------------------+
+     10 s  |   1  Tesla T4                       Off |   00000000:00:05.0 Off |                    0 |
+     10 s  | N/A   44C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+     10 s  |                                         |                        |                  N/A |
+     10 s  +-----------------------------------------+------------------------+----------------------+
+     10 s  +-----------------------------------------------------------------------------------------+
+     10 s  | Processes:                                                                              |
+     10 s  |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+     10 s  |        ID   ID                                                               Usage      |
+     10 s  |=========================================================================================|
+     10 s  |  No running processes found                                                             |
+     10 s  +-----------------------------------------------------------------------------------------+
+     18 s  torch 2.11.0+cu128 | CUDA : True | Tesla T4
+     18 s  Filesystem      Size  Used Avail Use% Mounted on
+     18 s  /dev/loop2       20G  116K   20G   1% /kaggle/working
+     18 s  overlay         8.0T  7.0T  1.1T  88% /
+     19 s  4
+     19 s                 total        used        free      shared  buff/cache   available
+     19 s  Mem:              31           1          25           0           4          29
+     20 s  /kaggle/working/project
+     20 s  f352fb6 (grafted, HEAD -> main, origin/main, origin/HEAD) Ajout du module src/data, exclu par erreur du dépôt
+     26 s  Système : Linux-6.18.55+-x86_64-with-glibc2.39
+     26 s  Python : 3.13.15
+     28 s    torch       2.11.0+cu128
+     79 s    monai       1.6.1
+     79 s    numpy       2.1.3
+     79 s    scipy       1.16.3
+     79 s    pandas      2.3.3
+     79 s    sklearn     1.6.1
+     79 s    skimage     0.25.2
+     79 s    pywt        1.8.0
+     79 s    nibabel     5.4.2
+     80 s    SimpleITK   2.5.6
+     80 s    matplotlib  3.10.0
+     80 s    seaborn     0.13.2
+     80 s    yaml        6.0.3
+     80 s    pytest      8.4.2
+     80 s  CUDA disponible : True
+     80 s    GPU : Tesla T4, 14.6 Go, CUDA 12.8
+     80 s  Threads CPU utilisés par PyTorch : 2 (coeurs logiques : 4)
+     80 s  RAM : 31.3 Go au total, 28.9 Go disponibles
+     80 s  Espace disque libre : 19.5 Go
+    116 s  .................................................................        [100%]
+   1034 s  303
+   1034 s  303
+   1034 s  [ 0.00 h] étapes : ['data'], seeds : [0, 1, 2]
+   1034 s  [ 0.00 h] $ scripts/download_data.py --config configs/kaggle/data.yaml --from-local
+   1037 s  303 cas annotés trouvés ; sous-ensemble : train=212, val=45, test=46
+   1037 s  [ 0.00 h] $ scripts/prepare_data.py --config configs/kaggle/data.yaml --workers 4
+   1105 s  Normalisation : {'clip_low': -6.0, 'clip_high': 246.0, 'mean': 109.727006330923, 'std': 53.09378488052994, 'n_voxels': 11205791}
+   1314 s  Statistiques swt_haar_L1 : {"mean": [[-3.466219909652006, 3.480129880314467e-20, 7.763667514520815e-21, -2.5910652329155145e-22]], "std": [[1.9598558010197726, 0.29231899761891195, 0.20446980301041412, 0.11094092650607]]}
+   1343 s  Statistiques swt_db2_L1 : {"mean": [[-3.466219909652006, -1.4037526657525581e-19, -1.3185388786970965e-16, -3.105214611470403e-20]], "std": [[1.9700556265482692, 0.25554352672756764, 0.15838375295435173, 0.09536177289753296]]}
+   1355 s  Statistiques dwt_multilevel_haar_L2 : {"mean": [[-3.466219909652006, 8.299765057635565e-06, -6.51088397854386e-06, 3.572803833313232e-06], [-6.932439819304012, -3.196167772501821e-05, 4.164410450546308e-05, -2.5505887194567344e-05]], "std": [[1.9597893644078135, 0.29264399326992596, 0.20461535109326962, 0.11098939141604551], [3.8114919058027112, 0.6856787888986089, 0.5319999212578086, 0.2871368005226415]]}
+   1355 s  [ 0.09 h] fin
+   1356 s  [ 0.09 h] étapes : ['train'], seeds : [0, 1, 2]
+   1356 s  [ 0.09 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 373
+   1361 s  Modèle none : 1,942,323 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   1413 s  époque   1 | loss 1.1368 | val loss 0.9631 | Dice vaisseaux 0.3650 | Dice tumeurs 0.1793 | 52 s *
+   1463 s  époque   2 | loss 0.7522 | val loss 0.8620 | Dice vaisseaux 0.3427 | Dice tumeurs 0.1729 | 50 s
+   1516 s  époque   3 | loss 0.6240 | val loss 0.7798 | Dice vaisseaux 0.3718 | Dice tumeurs 0.2495 | 53 s *
+   1569 s  époque   4 | loss 0.5755 | val loss 0.7421 | Dice vaisseaux 0.4186 | Dice tumeurs 0.2301 | 52 s *
+   1621 s  époque   5 | loss 0.5432 | val loss 0.7393 | Dice vaisseaux 0.3933 | Dice tumeurs 0.2659 | 53 s
+   1674 s  époque   6 | loss 0.4989 | val loss 0.7589 | Dice vaisseaux 0.2986 | Dice tumeurs 0.3247 | 53 s
+   1727 s  époque   7 | loss 0.4908 | val loss 0.7137 | Dice vaisseaux 0.3198 | Dice tumeurs 0.3544 | 53 s
+   1780 s  époque   8 | loss 0.4724 | val loss 0.6247 | Dice vaisseaux 0.5325 | Dice tumeurs 0.3299 | 53 s *
+   1833 s  époque   9 | loss 0.4510 | val loss 0.6409 | Dice vaisseaux 0.4889 | Dice tumeurs 0.3236 | 53 s
+   1885 s  époque  10 | loss 0.4481 | val loss 0.6003 | Dice vaisseaux 0.5263 | Dice tumeurs 0.3675 | 53 s
+   1938 s  époque  11 | loss 0.4355 | val loss 0.6589 | Dice vaisseaux 0.3536 | Dice tumeurs 0.4468 | 53 s
+   1991 s  époque  12 | loss 0.4243 | val loss 0.6171 | Dice vaisseaux 0.4674 | Dice tumeurs 0.3827 | 53 s
+   2044 s  époque  13 | loss 0.4103 | val loss 0.6872 | Dice vaisseaux 0.3799 | Dice tumeurs 0.3480 | 53 s
+   2097 s  époque  14 | loss 0.4038 | val loss 0.6407 | Dice vaisseaux 0.4817 | Dice tumeurs 0.3232 | 53 s
+   2150 s  époque  15 | loss 0.3879 | val loss 0.7719 | Dice vaisseaux 0.2561 | Dice tumeurs 0.3029 | 53 s
+   2203 s  époque  16 | loss 0.3991 | val loss 0.6611 | Dice vaisseaux 0.4358 | Dice tumeurs 0.3490 | 53 s
+   2256 s  époque  17 | loss 0.3850 | val loss 0.7103 | Dice vaisseaux 0.2477 | Dice tumeurs 0.4313 | 53 s
+   2308 s  époque  18 | loss 0.3807 | val loss 0.5886 | Dice vaisseaux 0.5014 | Dice tumeurs 0.4178 | 53 s
+   2308 s  Early stopping à l'époque 18 (meilleure époque : 8)
+   2308 s  Terminé : {'run': 'unet2d_seed0', 'best_epoch': 8, 'best_val_dice_vessel': 0.532545066110501, 'epochs_run': 18, 'total_time_min': 15.785964488983154, 'parameters': 1942323, 'stopped_by_time_limit': False}
+   2310 s  [ 0.35 h] unet2d_seed0 terminé (code 0)
+   2310 s  [ 0.35 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 357
+   2315 s  Modèle swt : 1,942,899 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   2398 s  époque   1 | loss 1.3169 | val loss 1.0785 | Dice vaisseaux 0.1932 | Dice tumeurs 0.1118 | 83 s *
+   2481 s  époque   2 | loss 0.8202 | val loss 0.8511 | Dice vaisseaux 0.3489 | Dice tumeurs 0.2186 | 83 s *
+   2564 s  époque   3 | loss 0.6518 | val loss 0.8140 | Dice vaisseaux 0.3487 | Dice tumeurs 0.2099 | 83 s
+   2647 s  époque   4 | loss 0.6103 | val loss 0.7516 | Dice vaisseaux 0.4532 | Dice tumeurs 0.2230 | 83 s *
+   2730 s  époque   5 | loss 0.5758 | val loss 0.6593 | Dice vaisseaux 0.5386 | Dice tumeurs 0.2794 | 83 s *
+   2814 s  époque   6 | loss 0.5266 | val loss 0.6505 | Dice vaisseaux 0.5233 | Dice tumeurs 0.3083 | 83 s
+   2897 s  époque   7 | loss 0.5191 | val loss 0.6610 | Dice vaisseaux 0.4777 | Dice tumeurs 0.3064 | 83 s
+   2980 s  époque   8 | loss 0.4943 | val loss 0.6762 | Dice vaisseaux 0.5177 | Dice tumeurs 0.2582 | 83 s
+   3063 s  époque   9 | loss 0.4776 | val loss 0.6455 | Dice vaisseaux 0.5066 | Dice tumeurs 0.2931 | 83 s
+   3146 s  époque  10 | loss 0.4721 | val loss 0.6331 | Dice vaisseaux 0.4860 | Dice tumeurs 0.3528 | 83 s
+   3230 s  époque  11 | loss 0.4739 | val loss 0.7113 | Dice vaisseaux 0.3674 | Dice tumeurs 0.3177 | 84 s
+   3314 s  époque  12 | loss 0.4440 | val loss 0.6994 | Dice vaisseaux 0.3241 | Dice tumeurs 0.3791 | 84 s
+   3397 s  époque  13 | loss 0.4234 | val loss 0.7508 | Dice vaisseaux 0.3031 | Dice tumeurs 0.3054 | 83 s
+   3480 s  époque  14 | loss 0.4236 | val loss 0.6298 | Dice vaisseaux 0.4873 | Dice tumeurs 0.3447 | 83 s
+   3564 s  époque  15 | loss 0.4018 | val loss 0.7609 | Dice vaisseaux 0.3349 | Dice tumeurs 0.2550 | 83 s
+   3564 s  Early stopping à l'époque 15 (meilleure époque : 5)
+   3564 s  Terminé : {'run': 'wavelet_unet_swt_haar_seed0', 'best_epoch': 5, 'best_val_dice_vessel': 0.5386237043488281, 'epochs_run': 15, 'total_time_min': 20.812848297754922, 'parameters': 1942899, 'stopped_by_time_limit': False}
+   3565 s  [ 0.70 h] wavelet_unet_swt_haar_seed0 terminé (code 0)
+   3565 s  [ 0.70 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 336
+   3569 s  Modèle dwt_multilevel : 1,945,779 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   3634 s  époque   1 | loss 1.2763 | val loss 1.0135 | Dice vaisseaux 0.2889 | Dice tumeurs 0.1426 | 65 s *
+   3698 s  époque   2 | loss 0.8040 | val loss 0.8887 | Dice vaisseaux 0.3387 | Dice tumeurs 0.1638 | 64 s *
+   3762 s  époque   3 | loss 0.6621 | val loss 0.7669 | Dice vaisseaux 0.3747 | Dice tumeurs 0.2888 | 64 s *
+   3827 s  époque   4 | loss 0.6158 | val loss 0.7791 | Dice vaisseaux 0.3887 | Dice tumeurs 0.2111 | 64 s *
+   3891 s  époque   5 | loss 0.5769 | val loss 0.6989 | Dice vaisseaux 0.4644 | Dice tumeurs 0.2609 | 64 s *
+   3955 s  époque   6 | loss 0.5183 | val loss 0.6767 | Dice vaisseaux 0.5140 | Dice tumeurs 0.2689 | 64 s *
+   4019 s  époque   7 | loss 0.5208 | val loss 0.7140 | Dice vaisseaux 0.3879 | Dice tumeurs 0.2857 | 64 s
+   4083 s  époque   8 | loss 0.4891 | val loss 0.6684 | Dice vaisseaux 0.4756 | Dice tumeurs 0.3009 | 64 s
+   4147 s  époque   9 | loss 0.4689 | val loss 0.6565 | Dice vaisseaux 0.4891 | Dice tumeurs 0.3001 | 64 s
+   4211 s  époque  10 | loss 0.4617 | val loss 0.6868 | Dice vaisseaux 0.4802 | Dice tumeurs 0.2611 | 64 s
+   4275 s  époque  11 | loss 0.4553 | val loss 0.6406 | Dice vaisseaux 0.4490 | Dice tumeurs 0.3552 | 64 s
+   4340 s  époque  12 | loss 0.4398 | val loss 0.6980 | Dice vaisseaux 0.3237 | Dice tumeurs 0.3668 | 64 s
+   4404 s  époque  13 | loss 0.4184 | val loss 0.6565 | Dice vaisseaux 0.4919 | Dice tumeurs 0.2973 | 64 s
+   4468 s  époque  14 | loss 0.4147 | val loss 0.6166 | Dice vaisseaux 0.4849 | Dice tumeurs 0.3619 | 64 s
+   4532 s  époque  15 | loss 0.3972 | val loss 0.7431 | Dice vaisseaux 0.2750 | Dice tumeurs 0.3391 | 64 s
+   4596 s  époque  16 | loss 0.3969 | val loss 0.6806 | Dice vaisseaux 0.3712 | Dice tumeurs 0.3597 | 64 s
+   4596 s  Early stopping à l'époque 16 (meilleure époque : 6)
+   4596 s  Terminé : {'run': 'wavelet_unet_dwt_haar_ms_seed0', 'best_epoch': 6, 'best_val_dice_vessel': 0.5140258753798403, 'epochs_run': 16, 'total_time_min': 17.12468647559484, 'parameters': 1945779, 'stopped_by_time_limit': False}
+   4597 s  [ 0.99 h] wavelet_unet_dwt_haar_ms_seed0 terminé (code 0)
+   4597 s  [ 0.99 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 319
+   4601 s  Modèle none : 1,942,323 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   4655 s  époque   1 | loss 1.6004 | val loss 1.2036 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0877 | 54 s *
+   4707 s  époque   2 | loss 0.9422 | val loss 0.9629 | Dice vaisseaux 0.1744 | Dice tumeurs 0.1708 | 52 s *
+   4759 s  époque   3 | loss 0.7267 | val loss 0.7913 | Dice vaisseaux 0.4159 | Dice tumeurs 0.2099 | 52 s *
+   4812 s  époque   4 | loss 0.6249 | val loss 0.7587 | Dice vaisseaux 0.3958 | Dice tumeurs 0.2360 | 52 s
+   4864 s  époque   5 | loss 0.5771 | val loss 0.6806 | Dice vaisseaux 0.4989 | Dice tumeurs 0.2866 | 52 s *
+   4917 s  époque   6 | loss 0.5556 | val loss 0.6634 | Dice vaisseaux 0.5123 | Dice tumeurs 0.2769 | 52 s *
+   4970 s  époque   7 | loss 0.5186 | val loss 0.6400 | Dice vaisseaux 0.5380 | Dice tumeurs 0.3068 | 53 s *
+   5022 s  époque   8 | loss 0.5143 | val loss 0.7905 | Dice vaisseaux 0.3763 | Dice tumeurs 0.1984 | 53 s
+   5075 s  époque   9 | loss 0.4834 | val loss 0.6436 | Dice vaisseaux 0.5326 | Dice tumeurs 0.2901 | 53 s
+   5127 s  époque  10 | loss 0.4660 | val loss 0.6100 | Dice vaisseaux 0.5418 | Dice tumeurs 0.3416 | 53 s *
+   5180 s  époque  11 | loss 0.4529 | val loss 0.6218 | Dice vaisseaux 0.5035 | Dice tumeurs 0.3573 | 53 s
+   5233 s  époque  12 | loss 0.4572 | val loss 0.6500 | Dice vaisseaux 0.4540 | Dice tumeurs 0.3496 | 53 s
+   5285 s  époque  13 | loss 0.4356 | val loss 0.7141 | Dice vaisseaux 0.3172 | Dice tumeurs 0.3479 | 53 s
+   5338 s  époque  14 | loss 0.4381 | val loss 0.6681 | Dice vaisseaux 0.4244 | Dice tumeurs 0.3335 | 53 s
+   5391 s  époque  15 | loss 0.4125 | val loss 0.6312 | Dice vaisseaux 0.5016 | Dice tumeurs 0.3381 | 53 s
+   5444 s  époque  16 | loss 0.4194 | val loss 0.6407 | Dice vaisseaux 0.4632 | Dice tumeurs 0.3502 | 53 s
+   5497 s  époque  17 | loss 0.3967 | val loss 0.6090 | Dice vaisseaux 0.4830 | Dice tumeurs 0.3907 | 53 s
+   5550 s  époque  18 | loss 0.3988 | val loss 0.6402 | Dice vaisseaux 0.4509 | Dice tumeurs 0.3641 | 53 s
+   5602 s  époque  19 | loss 0.3802 | val loss 0.6505 | Dice vaisseaux 0.4612 | Dice tumeurs 0.3194 | 53 s
+   5655 s  époque  20 | loss 0.3783 | val loss 0.6552 | Dice vaisseaux 0.4291 | Dice tumeurs 0.3638 | 53 s
+   5655 s  Early stopping à l'époque 20 (meilleure époque : 10)
+   5656 s  Terminé : {'run': 'unet2d_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5417844994022881, 'epochs_run': 20, 'total_time_min': 17.573279476165773, 'parameters': 1942323, 'stopped_by_time_limit': False}
+   5657 s  [ 1.28 h] unet2d_seed1 terminé (code 0)
+   5657 s  [ 1.28 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 301
+   5660 s  Modèle swt : 1,942,899 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   5744 s  époque   1 | loss 1.3012 | val loss 1.0668 | Dice vaisseaux 0.0000 | Dice tumeurs 0.0822 | 83 s *
+   5827 s  époque   2 | loss 0.8413 | val loss 0.8448 | Dice vaisseaux 0.4405 | Dice tumeurs 0.2169 | 83 s *
+   5910 s  époque   3 | loss 0.6324 | val loss 0.7448 | Dice vaisseaux 0.4090 | Dice tumeurs 0.2752 | 83 s
+   5994 s  époque   4 | loss 0.5786 | val loss 0.7083 | Dice vaisseaux 0.4960 | Dice tumeurs 0.2288 | 84 s *
+   6078 s  époque   5 | loss 0.5409 | val loss 0.7112 | Dice vaisseaux 0.4281 | Dice tumeurs 0.2677 | 84 s
+   6161 s  époque   6 | loss 0.5192 | val loss 0.6842 | Dice vaisseaux 0.4535 | Dice tumeurs 0.2924 | 83 s
+   6244 s  époque   7 | loss 0.4957 | val loss 0.6497 | Dice vaisseaux 0.5125 | Dice tumeurs 0.2997 | 83 s *
+   6326 s  époque   8 | loss 0.4919 | val loss 0.7035 | Dice vaisseaux 0.4786 | Dice tumeurs 0.2434 | 82 s
+   6409 s  époque   9 | loss 0.4673 | val loss 0.7120 | Dice vaisseaux 0.3576 | Dice tumeurs 0.3173 | 83 s
+   6492 s  époque  10 | loss 0.4505 | val loss 0.6186 | Dice vaisseaux 0.5283 | Dice tumeurs 0.3127 | 83 s *
+   6574 s  époque  11 | loss 0.4464 | val loss 0.6743 | Dice vaisseaux 0.4031 | Dice tumeurs 0.3409 | 83 s
+   6658 s  époque  12 | loss 0.4409 | val loss 0.6556 | Dice vaisseaux 0.4527 | Dice tumeurs 0.3284 | 83 s
+   6740 s  époque  13 | loss 0.4293 | val loss 0.6762 | Dice vaisseaux 0.3983 | Dice tumeurs 0.3400 | 83 s
+   6823 s  époque  14 | loss 0.4303 | val loss 0.7011 | Dice vaisseaux 0.3544 | Dice tumeurs 0.3520 | 83 s
+   6906 s  époque  15 | loss 0.4023 | val loss 0.6424 | Dice vaisseaux 0.4766 | Dice tumeurs 0.3434 | 83 s
+   6990 s  époque  16 | loss 0.4227 | val loss 0.6872 | Dice vaisseaux 0.4290 | Dice tumeurs 0.3030 | 83 s
+   7072 s  époque  17 | loss 0.3975 | val loss 0.6700 | Dice vaisseaux 0.3686 | Dice tumeurs 0.3818 | 83 s
+   7156 s  époque  18 | loss 0.3916 | val loss 0.7153 | Dice vaisseaux 0.3411 | Dice tumeurs 0.3196 | 83 s
+   7239 s  époque  19 | loss 0.3768 | val loss 0.6377 | Dice vaisseaux 0.4921 | Dice tumeurs 0.3215 | 83 s
+   7322 s  époque  20 | loss 0.3753 | val loss 0.7539 | Dice vaisseaux 0.2740 | Dice tumeurs 0.3170 | 84 s
+   7322 s  Early stopping à l'époque 20 (meilleure époque : 10)
+   7322 s  Terminé : {'run': 'wavelet_unet_swt_haar_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5282718445070986, 'epochs_run': 20, 'total_time_min': 27.697710637251536, 'parameters': 1942899, 'stopped_by_time_limit': False}
+   7323 s  [ 1.75 h] wavelet_unet_swt_haar_seed1 terminé (code 0)
+   7323 s  [ 1.75 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 273
+   7327 s  Modèle dwt_multilevel : 1,945,779 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   7392 s  époque   1 | loss 1.1057 | val loss 1.0161 | Dice vaisseaux 0.0568 | Dice tumeurs 0.1241 | 65 s *
+   7455 s  époque   2 | loss 0.6866 | val loss 0.7798 | Dice vaisseaux 0.3655 | Dice tumeurs 0.2642 | 63 s *
+   7519 s  époque   3 | loss 0.6020 | val loss 0.7960 | Dice vaisseaux 0.4214 | Dice tumeurs 0.1873 | 63 s *
+   7582 s  époque   4 | loss 0.5839 | val loss 0.6654 | Dice vaisseaux 0.5069 | Dice tumeurs 0.2998 | 63 s *
+   7646 s  époque   5 | loss 0.5522 | val loss 0.6597 | Dice vaisseaux 0.4999 | Dice tumeurs 0.2902 | 63 s
+   7709 s  époque   6 | loss 0.5192 | val loss 0.7254 | Dice vaisseaux 0.3701 | Dice tumeurs 0.2947 | 63 s
+   7773 s  époque   7 | loss 0.4927 | val loss 0.6449 | Dice vaisseaux 0.5201 | Dice tumeurs 0.2838 | 64 s *
+   7836 s  époque   8 | loss 0.4941 | val loss 0.6887 | Dice vaisseaux 0.4777 | Dice tumeurs 0.2514 | 64 s
+   7900 s  époque   9 | loss 0.4678 | val loss 0.6764 | Dice vaisseaux 0.4314 | Dice tumeurs 0.3193 | 64 s
+   7963 s  époque  10 | loss 0.4546 | val loss 0.6092 | Dice vaisseaux 0.5300 | Dice tumeurs 0.3486 | 63 s *
+   8027 s  époque  11 | loss 0.4432 | val loss 0.6327 | Dice vaisseaux 0.4555 | Dice tumeurs 0.3678 | 64 s
+   8092 s  époque  12 | loss 0.4395 | val loss 0.7363 | Dice vaisseaux 0.3210 | Dice tumeurs 0.2949 | 65 s
+   8156 s  époque  13 | loss 0.4261 | val loss 0.7218 | Dice vaisseaux 0.2914 | Dice tumeurs 0.3635 | 64 s
+   8220 s  époque  14 | loss 0.4321 | val loss 0.6941 | Dice vaisseaux 0.3586 | Dice tumeurs 0.3536 | 64 s
+   8285 s  époque  15 | loss 0.4049 | val loss 0.7174 | Dice vaisseaux 0.3413 | Dice tumeurs 0.3374 | 64 s
+   8349 s  époque  16 | loss 0.4254 | val loss 0.6745 | Dice vaisseaux 0.4094 | Dice tumeurs 0.3629 | 64 s
+   8413 s  époque  17 | loss 0.3990 | val loss 0.6409 | Dice vaisseaux 0.4263 | Dice tumeurs 0.3959 | 64 s
+   8477 s  époque  18 | loss 0.3921 | val loss 0.6886 | Dice vaisseaux 0.3550 | Dice tumeurs 0.3624 | 64 s
+   8541 s  époque  19 | loss 0.3776 | val loss 0.6689 | Dice vaisseaux 0.3980 | Dice tumeurs 0.3644 | 64 s
+   8606 s  époque  20 | loss 0.3743 | val loss 0.7379 | Dice vaisseaux 0.2698 | Dice tumeurs 0.3632 | 64 s
+   8606 s  Early stopping à l'époque 20 (meilleure époque : 10)
+   8606 s  Terminé : {'run': 'wavelet_unet_dwt_haar_ms_seed1', 'best_epoch': 10, 'best_val_dice_vessel': 0.5300367839068534, 'epochs_run': 20, 'total_time_min': 21.302683516343436, 'parameters': 1945779, 'stopped_by_time_limit': False}
+   8607 s  [ 2.10 h] wavelet_unet_dwt_haar_ms_seed1 terminé (code 0)
+   8607 s  [ 2.10 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 252
+   8611 s  Modèle none : 1,942,323 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+   8664 s  époque   1 | loss 1.3121 | val loss 1.0355 | Dice vaisseaux 0.3006 | Dice tumeurs 0.1280 | 54 s *
+   8717 s  époque   2 | loss 0.8110 | val loss 0.8396 | Dice vaisseaux 0.3759 | Dice tumeurs 0.1673 | 53 s *
+   8770 s  époque   3 | loss 0.7352 | val loss 0.8294 | Dice vaisseaux 0.3712 | Dice tumeurs 0.1247 | 53 s
+   8822 s  époque   4 | loss 0.6766 | val loss 0.7593 | Dice vaisseaux 0.4204 | Dice tumeurs 0.2132 | 53 s *
+   8875 s  époque   5 | loss 0.6199 | val loss 0.9010 | Dice vaisseaux 0.3056 | Dice tumeurs 0.1304 | 53 s
+   8928 s  époque   6 | loss 0.5796 | val loss 0.7047 | Dice vaisseaux 0.4269 | Dice tumeurs 0.2832 | 53 s *
+   8981 s  époque   7 | loss 0.5466 | val loss 0.7258 | Dice vaisseaux 0.4009 | Dice tumeurs 0.2599 | 53 s
+   9034 s  époque   8 | loss 0.5150 | val loss 0.7096 | Dice vaisseaux 0.4161 | Dice tumeurs 0.2793 | 53 s
+   9087 s  époque   9 | loss 0.4872 | val loss 0.8059 | Dice vaisseaux 0.2317 | Dice tumeurs 0.2800 | 53 s
+   9140 s  époque  10 | loss 0.4645 | val loss 0.7818 | Dice vaisseaux 0.2628 | Dice tumeurs 0.2769 | 53 s
+   9193 s  époque  11 | loss 0.4666 | val loss 0.8356 | Dice vaisseaux 0.3451 | Dice tumeurs 0.1556 | 53 s
+   9246 s  époque  12 | loss 0.4633 | val loss 0.8015 | Dice vaisseaux 0.2808 | Dice tumeurs 0.2474 | 53 s
+   9298 s  époque  13 | loss 0.4550 | val loss 0.7118 | Dice vaisseaux 0.4014 | Dice tumeurs 0.2866 | 53 s
+   9351 s  époque  14 | loss 0.4372 | val loss 0.7387 | Dice vaisseaux 0.3371 | Dice tumeurs 0.2921 | 53 s
+   9404 s  époque  15 | loss 0.4244 | val loss 0.7942 | Dice vaisseaux 0.2093 | Dice tumeurs 0.3287 | 53 s
+   9457 s  époque  16 | loss 0.4117 | val loss 0.6666 | Dice vaisseaux 0.4409 | Dice tumeurs 0.3316 | 53 s *
+   9509 s  époque  17 | loss 0.4094 | val loss 0.7607 | Dice vaisseaux 0.2910 | Dice tumeurs 0.3013 | 53 s
+   9562 s  époque  18 | loss 0.4033 | val loss 0.7339 | Dice vaisseaux 0.4192 | Dice tumeurs 0.2349 | 53 s
+   9615 s  époque  19 | loss 0.3889 | val loss 0.7142 | Dice vaisseaux 0.4173 | Dice tumeurs 0.2578 | 53 s
+   9667 s  époque  20 | loss 0.3828 | val loss 0.7613 | Dice vaisseaux 0.3662 | Dice tumeurs 0.2308 | 53 s
+   9720 s  époque  21 | loss 0.3822 | val loss 0.7767 | Dice vaisseaux 0.2617 | Dice tumeurs 0.2873 | 53 s
+   9773 s  époque  22 | loss 0.3744 | val loss 0.7460 | Dice vaisseaux 0.2611 | Dice tumeurs 0.3538 | 53 s
+   9826 s  époque  23 | loss 0.3670 | val loss 0.6588 | Dice vaisseaux 0.4244 | Dice tumeurs 0.3566 | 53 s
+   9878 s  époque  24 | loss 0.3625 | val loss 0.6994 | Dice vaisseaux 0.4188 | Dice tumeurs 0.2801 | 53 s
+   9931 s  époque  25 | loss 0.3565 | val loss 0.7245 | Dice vaisseaux 0.3440 | Dice tumeurs 0.3044 | 53 s
+   9984 s  époque  26 | loss 0.3575 | val loss 0.6864 | Dice vaisseaux 0.3542 | Dice tumeurs 0.3758 | 53 s
+   9984 s  Early stopping à l'époque 26 (meilleure époque : 16)
+   9984 s  Terminé : {'run': 'unet2d_seed2', 'best_epoch': 16, 'best_val_dice_vessel': 0.4408728502665901, 'epochs_run': 26, 'total_time_min': 22.887382864952087, 'parameters': 1942323, 'stopped_by_time_limit': False}
+   9985 s  [ 2.49 h] unet2d_seed2 terminé (code 0)
+   9985 s  [ 2.49 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 229
+   9989 s  Modèle swt : 1,942,899 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+  10072 s  époque   1 | loss 1.1900 | val loss 0.9780 | Dice vaisseaux 0.0000 | Dice tumeurs 0.2182 | 83 s *
+  10154 s  époque   2 | loss 0.7348 | val loss 0.7541 | Dice vaisseaux 0.4775 | Dice tumeurs 0.2555 | 82 s *
+  10237 s  époque   3 | loss 0.5745 | val loss 0.6744 | Dice vaisseaux 0.5098 | Dice tumeurs 0.2747 | 82 s *
+  10319 s  époque   4 | loss 0.5404 | val loss 0.6662 | Dice vaisseaux 0.5052 | Dice tumeurs 0.2950 | 83 s
+  10402 s  époque   5 | loss 0.5086 | val loss 0.6221 | Dice vaisseaux 0.5693 | Dice tumeurs 0.2947 | 83 s *
+  10485 s  époque   6 | loss 0.4916 | val loss 0.6519 | Dice vaisseaux 0.5021 | Dice tumeurs 0.3003 | 83 s
+  10568 s  époque   7 | loss 0.4810 | val loss 0.6059 | Dice vaisseaux 0.5840 | Dice tumeurs 0.3119 | 83 s *
+  10650 s  époque   8 | loss 0.4585 | val loss 0.6394 | Dice vaisseaux 0.4887 | Dice tumeurs 0.3261 | 82 s
+  10733 s  époque   9 | loss 0.4477 | val loss 0.7677 | Dice vaisseaux 0.2529 | Dice tumeurs 0.3013 | 83 s
+  10816 s  époque  10 | loss 0.4296 | val loss 0.6269 | Dice vaisseaux 0.4844 | Dice tumeurs 0.3471 | 83 s
+  10898 s  époque  11 | loss 0.4269 | val loss 0.6649 | Dice vaisseaux 0.4715 | Dice tumeurs 0.2964 | 83 s
+  10981 s  époque  12 | loss 0.4153 | val loss 0.6483 | Dice vaisseaux 0.4200 | Dice tumeurs 0.3648 | 82 s
+  11064 s  époque  13 | loss 0.4106 | val loss 0.6699 | Dice vaisseaux 0.4007 | Dice tumeurs 0.3532 | 83 s
+  11146 s  époque  14 | loss 0.3929 | val loss 0.6460 | Dice vaisseaux 0.4739 | Dice tumeurs 0.3170 | 83 s
+  11229 s  époque  15 | loss 0.3886 | val loss 0.6946 | Dice vaisseaux 0.3565 | Dice tumeurs 0.3367 | 83 s
+  11312 s  époque  16 | loss 0.3830 | val loss 0.6410 | Dice vaisseaux 0.4344 | Dice tumeurs 0.3580 | 83 s
+  11394 s  époque  17 | loss 0.3861 | val loss 0.6576 | Dice vaisseaux 0.4392 | Dice tumeurs 0.3298 | 82 s
+  11394 s  Early stopping à l'époque 17 (meilleure époque : 7)
+  11394 s  Terminé : {'run': 'wavelet_unet_swt_haar_seed2', 'best_epoch': 7, 'best_val_dice_vessel': 0.5839612845615088, 'epochs_run': 17, 'total_time_min': 23.42469311952591, 'parameters': 1942899, 'stopped_by_time_limit': False}
+  11395 s  [ 2.88 h] wavelet_unet_swt_haar_seed2 terminé (code 0)
+  11395 s  [ 2.88 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 205
+  11399 s  Modèle dwt_multilevel : 1,945,779 paramètres, 212 volumes d'entraînement, 45 de validation, device=cuda
+  11464 s  époque   1 | loss 1.1888 | val loss 0.9639 | Dice vaisseaux 0.3756 | Dice tumeurs 0.1786 | 65 s *
+  11528 s  époque   2 | loss 0.7422 | val loss 0.8599 | Dice vaisseaux 0.3501 | Dice tumeurs 0.1779 | 64 s
+  11591 s  époque   3 | loss 0.6506 | val loss 0.8129 | Dice vaisseaux 0.4367 | Dice tumeurs 0.0883 | 64 s *
+  11655 s  époque   4 | loss 0.5795 | val loss 0.6791 | Dice vaisseaux 0.4741 | Dice tumeurs 0.2998 | 63 s *
+  11718 s  époque   5 | loss 0.5387 | val loss 0.7468 | Dice vaisseaux 0.4162 | Dice tumeurs 0.2353 | 63 s
+  11781 s  époque   6 | loss 0.5238 | val loss 0.7170 | Dice vaisseaux 0.3823 | Dice tumeurs 0.2991 | 63 s
+  11845 s  époque   7 | loss 0.5104 | val loss 0.6422 | Dice vaisseaux 0.5161 | Dice tumeurs 0.3080 | 63 s *
+  11908 s  époque   8 | loss 0.4752 | val loss 0.7989 | Dice vaisseaux 0.2550 | Dice tumeurs 0.2671 | 64 s
+  11972 s  époque   9 | loss 0.4630 | val loss 0.7264 | Dice vaisseaux 0.3852 | Dice tumeurs 0.2595 | 63 s
+  12036 s  époque  10 | loss 0.4420 | val loss 0.7874 | Dice vaisseaux 0.2208 | Dice tumeurs 0.3186 | 64 s
+  12100 s  époque  11 | loss 0.4477 | val loss 0.6708 | Dice vaisseaux 0.4355 | Dice tumeurs 0.3405 | 64 s
+  12164 s  époque  12 | loss 0.4503 | val loss 0.7167 | Dice vaisseaux 0.3325 | Dice tumeurs 0.3231 | 64 s
+  12228 s  époque  13 | loss 0.4291 | val loss 0.7873 | Dice vaisseaux 0.2495 | Dice tumeurs 0.2906 | 64 s
+  12293 s  époque  14 | loss 0.4173 | val loss 0.6860 | Dice vaisseaux 0.3842 | Dice tumeurs 0.3314 | 65 s
+  12357 s  époque  15 | loss 0.4023 | val loss 0.8018 | Dice vaisseaux 0.2391 | Dice tumeurs 0.2695 | 64 s
+  12421 s  époque  16 | loss 0.3962 | val loss 0.6753 | Dice vaisseaux 0.4340 | Dice tumeurs 0.3121 | 64 s
+  12486 s  époque  17 | loss 0.4033 | val loss 0.7390 | Dice vaisseaux 0.2727 | Dice tumeurs 0.3496 | 64 s
+  12486 s  Early stopping à l'époque 17 (meilleure époque : 7)
+  12486 s  Terminé : {'run': 'wavelet_unet_dwt_haar_ms_seed2', 'best_epoch': 7, 'best_val_dice_vessel': 0.5160534852092061, 'epochs_run': 17, 'total_time_min': 18.11031575202942, 'parameters': 1945779, 'stopped_by_time_limit': False}
+  12487 s  [ 3.18 h] wavelet_unet_dwt_haar_ms_seed2 terminé (code 0)
+  12487 s  [ 3.18 h] $ scripts/train.py --config configs/unet_3d.yaml --override configs/kaggle/gpu_3d.yaml --seed 0 --max-minutes 247
+  12511 s  U-Net 3D : 600,680 paramètres, 212 volumes d'entraînement, device=cuda
+  12550 s  époque   1 | loss 1.2776 | Dice vaisseaux val nan | 38 s
+  12689 s  époque   2 | loss 0.9879 | Dice vaisseaux val 0.2735 | 140 s
+  12727 s  époque   3 | loss 0.8990 | Dice vaisseaux val nan | 38 s
+  12862 s  époque   4 | loss 0.8651 | Dice vaisseaux val 0.4062 | 135 s
+  12900 s  époque   5 | loss 0.8315 | Dice vaisseaux val nan | 38 s
+  13034 s  époque   6 | loss 0.8065 | Dice vaisseaux val 0.4321 | 134 s
+  13071 s  époque   7 | loss 0.7936 | Dice vaisseaux val nan | 38 s
+  13205 s  époque   8 | loss 0.7881 | Dice vaisseaux val 0.4622 | 134 s
+  13242 s  époque   9 | loss 0.7659 | Dice vaisseaux val nan | 38 s
+  13375 s  époque  10 | loss 0.7843 | Dice vaisseaux val 0.4721 | 133 s
+  13413 s  époque  11 | loss 0.7477 | Dice vaisseaux val nan | 38 s
+  13546 s  époque  12 | loss 0.7325 | Dice vaisseaux val 0.4661 | 133 s
+  13583 s  époque  13 | loss 0.7361 | Dice vaisseaux val nan | 38 s
+  13716 s  époque  14 | loss 0.7225 | Dice vaisseaux val 0.4880 | 133 s
+  13754 s  époque  15 | loss 0.6937 | Dice vaisseaux val nan | 38 s
+  13886 s  époque  16 | loss 0.7035 | Dice vaisseaux val 0.5064 | 133 s
+  13924 s  époque  17 | loss 0.6950 | Dice vaisseaux val nan | 38 s
+  14056 s  époque  18 | loss 0.6638 | Dice vaisseaux val 0.5196 | 132 s
+  14093 s  époque  19 | loss 0.6786 | Dice vaisseaux val nan | 38 s
+  14225 s  époque  20 | loss 0.6806 | Dice vaisseaux val 0.5214 | 132 s
+  14263 s  époque  21 | loss 0.6744 | Dice vaisseaux val nan | 38 s
+  14394 s  époque  22 | loss 0.6351 | Dice vaisseaux val 0.5360 | 131 s
+  14431 s  époque  23 | loss 0.6554 | Dice vaisseaux val nan | 37 s
+  14563 s  époque  24 | loss 0.6367 | Dice vaisseaux val 0.4959 | 131 s
+  14600 s  époque  25 | loss 0.6173 | Dice vaisseaux val nan | 38 s
+  14731 s  époque  26 | loss 0.6184 | Dice vaisseaux val 0.5147 | 131 s
+  14769 s  époque  27 | loss 0.6367 | Dice vaisseaux val nan | 38 s
+  14901 s  époque  28 | loss 0.6057 | Dice vaisseaux val 0.5337 | 132 s
+  14938 s  époque  29 | loss 0.6246 | Dice vaisseaux val nan | 37 s
+  15069 s  époque  30 | loss 0.6144 | Dice vaisseaux val 0.5147 | 131 s
+  15107 s  époque  31 | loss 0.5956 | Dice vaisseaux val nan | 38 s
+  15239 s  époque  32 | loss 0.5751 | Dice vaisseaux val 0.5458 | 132 s
+  15276 s  époque  33 | loss 0.6000 | Dice vaisseaux val nan | 38 s
+  15408 s  époque  34 | loss 0.5680 | Dice vaisseaux val 0.5276 | 132 s
+  15446 s  époque  35 | loss 0.5647 | Dice vaisseaux val nan | 38 s
+  15577 s  époque  36 | loss 0.5726 | Dice vaisseaux val 0.5507 | 131 s
+  15614 s  époque  37 | loss 0.5704 | Dice vaisseaux val nan | 38 s
+  15747 s  époque  38 | loss 0.5854 | Dice vaisseaux val 0.5510 | 132 s
+  15784 s  époque  39 | loss 0.5573 | Dice vaisseaux val nan | 38 s
+  15916 s  époque  40 | loss 0.5598 | Dice vaisseaux val 0.5146 | 131 s
+  15953 s  époque  41 | loss 0.5409 | Dice vaisseaux val nan | 37 s
+  16085 s  époque  42 | loss 0.5447 | Dice vaisseaux val 0.5507 | 132 s
+  16122 s  époque  43 | loss 0.5492 | Dice vaisseaux val nan | 37 s
+  16253 s  époque  44 | loss 0.5529 | Dice vaisseaux val 0.5624 | 131 s
+  16291 s  époque  45 | loss 0.5283 | Dice vaisseaux val nan | 38 s
+  16422 s  époque  46 | loss 0.5100 | Dice vaisseaux val 0.5586 | 131 s
+  16459 s  époque  47 | loss 0.5198 | Dice vaisseaux val nan | 37 s
+  16590 s  époque  48 | loss 0.5155 | Dice vaisseaux val 0.5547 | 131 s
+  16627 s  époque  49 | loss 0.5356 | Dice vaisseaux val nan | 38 s
+  16761 s  époque  50 | loss 0.5167 | Dice vaisseaux val 0.5650 | 134 s
+  16799 s  époque  51 | loss 0.5072 | Dice vaisseaux val nan | 38 s
+  16934 s  époque  52 | loss 0.5188 | Dice vaisseaux val 0.5606 | 135 s
+  16972 s  époque  53 | loss 0.5043 | Dice vaisseaux val nan | 38 s
+  17105 s  époque  54 | loss 0.5309 | Dice vaisseaux val 0.5638 | 134 s
+  17143 s  époque  55 | loss 0.5163 | Dice vaisseaux val nan | 38 s
+  17277 s  époque  56 | loss 0.5027 | Dice vaisseaux val 0.5667 | 134 s
+  17315 s  époque  57 | loss 0.5127 | Dice vaisseaux val nan | 38 s
+  17449 s  époque  58 | loss 0.5117 | Dice vaisseaux val 0.5647 | 135 s
+  17487 s  époque  59 | loss 0.5031 | Dice vaisseaux val nan | 38 s
+  17621 s  époque  60 | loss 0.4987 | Dice vaisseaux val 0.5658 | 134 s
+  17621 s  Terminé : {'run': 'unet3d_seed0', 'best_epoch': 56, 'best_val_dice_vessel': 0.566738551789796, 'epochs_run': 60, 'total_time_min': 85.17132009267807, 'parameters': 600680, 'stopped_by_time_limit': False}
+  17625 s  [ 4.61 h] unet3d_seed0 terminé (code 0)
+  17625 s  [ 4.61 h] fin
+  17625 s  [ 0.35 h] unet2d_seed0 terminé (code 0)
+  17625 s  [ 0.35 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 357
+  17625 s  [ 0.70 h] wavelet_unet_swt_haar_seed0 terminé (code 0)
+  17625 s  [ 0.70 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 0 --max-minutes 336
+  17625 s  [ 0.99 h] wavelet_unet_dwt_haar_ms_seed0 terminé (code 0)
+  17625 s  [ 0.99 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 319
+  17625 s  [ 1.28 h] unet2d_seed1 terminé (code 0)
+  17625 s  [ 1.28 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 301
+  17625 s  [ 1.75 h] wavelet_unet_swt_haar_seed1 terminé (code 0)
+  17625 s  [ 1.75 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 1 --max-minutes 273
+  17625 s  [ 2.10 h] wavelet_unet_dwt_haar_ms_seed1 terminé (code 0)
+  17625 s  [ 2.10 h] $ scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 252
+  17625 s  [ 2.49 h] unet2d_seed2 terminé (code 0)
+  17625 s  [ 2.49 h] $ scripts/train.py --config configs/wavelet_unet.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 229
+  17625 s  [ 2.88 h] wavelet_unet_swt_haar_seed2 terminé (code 0)
+  17625 s  [ 2.88 h] $ scripts/train.py --config configs/wavelet_unet_multiscale.yaml --override configs/kaggle/gpu_2d.yaml --seed 2 --max-minutes 205
+  17625 s  [ 3.18 h] wavelet_unet_dwt_haar_ms_seed2 terminé (code 0)
+  17625 s  [ 3.18 h] $ scripts/train.py --config configs/unet_3d.yaml --override configs/kaggle/gpu_3d.yaml --seed 0 --max-minutes 247
+  17625 s  [ 4.61 h] unet3d_seed0 terminé (code 0)
+  17625 s  [ 4.61 h] fin
+  17626 s  [ 4.61 h] étapes : ['evaluate'], seeds : [0, 1, 2]
+  17626 s  [ 4.61 h] évaluation original : 10 modèles
+  17626 s  [ 4.61 h] évaluation down_x2 : 10 modèles
+  17626 s  [ 4.61 h] évaluation down_x4 : 10 modèles
+  17626 s  [ 4.61 h] évaluation blur_1mm : 4 modèles
+  18946 s  [ 4.98 h] évaluation blur_1mm terminée (code 0)
+  18946 s  [ 4.98 h] évaluation down_x2_noise20 : 4 modèles
+  20866 s  [ 5.51 h] évaluation down_x2_noise20 terminée (code 0)
+  21016 s  [ 5.55 h] évaluation original terminée (code 0)
+  21376 s  [ 5.65 h] évaluation down_x2 terminée (code 0)
+  21376 s  [ 5.65 h] évaluation down_x4 terminée (code 0)
+  21376 s  [ 5.65 h] fin
+  21377 s  [ 5.65 h] étapes : ['analyze'], seeds : [0, 1, 2]
+  21377 s  [ 5.65 h] 3496 lignes fusionnées dans /kaggle/working/project/results/kaggle/metrics/test_per_volume.csv
+  21377 s  [ 5.65 h] $ scripts/analyze_results.py --split test --eval-config configs/kaggle/evaluation.yaml --results-dir results/kaggle --experiments-dir experiments/kaggle
+  21382 s                                                   dice  cldice  hd95_mm  recall  precision
+  21382 s  condition       model                    seed
+  21382 s  blur_1mm        unet2d                   0     0.5165  0.5681  49.4412  0.4986     0.6456
+  21382 s                  unet3d                   0     0.5570  0.6230  28.0142  0.5099     0.7021
+  21382 s                  wavelet_unet_dwt_haar_ms 0     0.4921  0.5488  34.5224  0.4532     0.6626
+  21382 s                  wavelet_unet_swt_haar    0     0.4912  0.5454  39.3989  0.4488     0.6637
+  21382 s  down_x2         unet2d                   0     0.5243  0.5787  48.1548  0.5143     0.6407
+  21382 s                                           1     0.5623  0.6019  40.8933  0.5367     0.6503
+  21382 s                                           2     0.5055  0.5531  74.2980  0.7113     0.4223
+  21382 s                  unet3d                   0     0.5746  0.6412  27.9918  0.5371     0.6995
+  21382 s                  wavelet_unet_dwt_haar_ms 0     0.5144  0.5739  34.1584  0.4944     0.6489
+  21382 s                                           1     0.5534  0.5925  56.5804  0.6147     0.5560
+  21382 s                                           2     0.5557  0.6014  66.9117  0.6557     0.5196
+  21382 s                  wavelet_unet_swt_haar    0     0.5244  0.5775  35.1954  0.4918     0.6694
+  21382 s                                           1     0.5234  0.5847  53.7123  0.4916     0.6504
+  21382 s                                           2     0.5954  0.6424  31.8926  0.6053     0.6523
+  21382 s  down_x2_noise20 unet2d                   0     0.5077  0.5248  57.1980  0.5854     0.5085
+  21382 s                  unet3d                   0     0.5503  0.5891  44.4280  0.5611     0.6024
+  21382 s                  wavelet_unet_dwt_haar_ms 0     0.5063  0.5370  44.5606  0.6069     0.4892
+  21382 s                  wavelet_unet_swt_haar    0     0.4982  0.5223  48.5576  0.4965     0.5808
+  21382 s  down_x4         unet2d                   0     0.4874  0.5285  52.3323  0.4652     0.6283
+  21382 s                                           1     0.5388  0.5744  43.1571  0.5287     0.6120
+  21382 s                                           2     0.4842  0.5193  71.6543  0.6316     0.4231
+  21382 s                  unet3d                   0     0.5304  0.5901  28.8874  0.4759     0.6958
+  21382 s                  wavelet_unet_dwt_haar_ms 0     0.4517  0.4955  37.7770  0.3979     0.6600
+  21382 s                                           1     0.5267  0.5534  56.1043  0.5666     0.5469
+  21382 s                                           2     0.5323  0.5851  61.3285  0.5922     0.5302
+  21382 s                  wavelet_unet_swt_haar    0     0.4394  0.4870  44.4395  0.3851     0.6510
+  21382 s                                           1     0.5114  0.5803  43.8506  0.5411     0.5535
+  21382 s                                           2     0.5592  0.5939  31.4720  0.5472     0.6538
+  21382 s  original        unet2d                   0     0.5377  0.5797  50.3357  0.5571     0.6060
+  21382 s                                           1     0.5507  0.5857  43.6486  0.5118     0.6657
+  21382 s                                           2     0.4903  0.5285  77.2659  0.7507     0.3910
+  21382 s                  unet3d                   0     0.5823  0.6386  36.9429  0.5741     0.6634
+  21382 s                  wavelet_unet_dwt_haar_ms 0     0.5405  0.5970  40.3829  0.5776     0.5886
+  21382 s                                           1     0.5464  0.5797  58.3449  0.6228     0.5356
+  21382 s                                           2     0.5549  0.5885  69.6085  0.6461     0.5260
+  21382 s                  wavelet_unet_swt_haar    0     0.5349  0.5764  46.3374  0.5351     0.6240
+  21382 s                                           1     0.5376  0.5854  66.5671  0.5572     0.5909
+  21382 s                                           2     0.5921  0.6330  35.7555  0.6112     0.6415
+  21382 s              seeds       condition                    model metric  n_volumes  mean_diff_vs_unet2d  median_diff_vs_unet2d  volumes_better  volumes_worse  wilcoxon_p
+  21382 s             seed 0        blur_1mm                   unet3d   dice         46               0.0405                 0.0431              34             12      0.0011
+  21382 s             seed 0        blur_1mm                   unet3d cldice         46               0.0549                 0.0521              36             10      0.0000
+  21382 s             seed 0        blur_1mm wavelet_unet_dwt_haar_ms   dice         46              -0.0244                -0.0198              19             27      0.0661
+  21382 s             seed 0        blur_1mm wavelet_unet_dwt_haar_ms cldice         46              -0.0194                -0.0031              22             24      0.3180
+  21382 s             seed 0        blur_1mm    wavelet_unet_swt_haar   dice         46              -0.0253                -0.0271              17             29      0.0313
+  21382 s             seed 0        blur_1mm    wavelet_unet_swt_haar cldice         46              -0.0227                -0.0184              17             29      0.0927
+  21382 s             seed 0         down_x2                   unet3d   dice         46               0.0504                 0.0393              36             10      0.0001
+  21382 s             seed 0         down_x2                   unet3d cldice         46               0.0625                 0.0581              37              9      0.0000
+  21382 s             seed 0         down_x2 wavelet_unet_dwt_haar_ms   dice         46              -0.0099                -0.0041              20             26      0.2873
+  21382 s             seed 0         down_x2 wavelet_unet_dwt_haar_ms cldice         46              -0.0048                 0.0080              26             20      0.7951
+  21382 s             seed 0         down_x2    wavelet_unet_swt_haar   dice         46               0.0001                 0.0048              24             22      0.9827
+  21382 s             seed 0         down_x2    wavelet_unet_swt_haar cldice         46              -0.0012                 0.0035              24             22      0.8626
+  21382 s             seed 0 down_x2_noise20                   unet3d   dice         46               0.0426                 0.0405              41              5      0.0000
+  21382 s             seed 0 down_x2_noise20                   unet3d cldice         46               0.0643                 0.0676              44              2      0.0000
+  21382 s             seed 0 down_x2_noise20 wavelet_unet_dwt_haar_ms   dice         46              -0.0014                -0.0068              21             25      0.8967
+  21382 s             seed 0 down_x2_noise20 wavelet_unet_dwt_haar_ms cldice         46               0.0122                 0.0126              31             15      0.0461
+  21382 s             seed 0 down_x2_noise20    wavelet_unet_swt_haar   dice         46              -0.0096                 0.0019              23             23      0.6650
+  21382 s             seed 0 down_x2_noise20    wavelet_unet_swt_haar cldice         46              -0.0025                -0.0009              22             24      0.8967
+  21382 s             seed 0         down_x4                   unet3d   dice         46               0.0430                 0.0468              33             13      0.0007
+  21382 s             seed 0         down_x4                   unet3d cldice         46               0.0616                 0.0568              36             10      0.0000
+  21382 s             seed 0         down_x4 wavelet_unet_dwt_haar_ms   dice         46              -0.0357                -0.0244              17             29      0.0221
+  21382 s             seed 0         down_x4 wavelet_unet_dwt_haar_ms cldice         46              -0.0330                -0.0203              21             25      0.0730
+  21382 s             seed 0         down_x4    wavelet_unet_swt_haar   dice         46              -0.0480                -0.0440              14             32      0.0017
+  21382 s             seed 0         down_x4    wavelet_unet_swt_haar cldice         46              -0.0415                -0.0442              16             30      0.0167
+  21382 s             seed 0        original                   unet3d   dice         46               0.0446                 0.0298              36             10      0.0000
+  21382 s             seed 0        original                   unet3d cldice         46               0.0589                 0.0516              39              7      0.0000
+  21382 s             seed 0        original wavelet_unet_dwt_haar_ms   dice         46               0.0028                 0.0072              26             20      0.8626
+  21382 s             seed 0        original wavelet_unet_dwt_haar_ms cldice         46               0.0172                 0.0148              28             18      0.0425
+  21382 s             seed 0        original    wavelet_unet_swt_haar   dice         46              -0.0028                 0.0013              25             21      0.7454
+  21382 s             seed 0        original    wavelet_unet_swt_haar cldice         46              -0.0033                -0.0025              22             24      0.7536
+  21382 s             seed 1         down_x2 wavelet_unet_dwt_haar_ms   dice         46              -0.0089                -0.0141              14             32      0.0195
+  21382 s             seed 1         down_x2 wavelet_unet_dwt_haar_ms cldice         46              -0.0094                -0.0239              13             33      0.0057
+  21382 s             seed 1         down_x2    wavelet_unet_swt_haar   dice         46              -0.0389                -0.0410              10             36      0.0001
+  21382 s             seed 1         down_x2    wavelet_unet_swt_haar cldice         46              -0.0173                -0.0239              13             33      0.0040
+  21382 s             seed 1         down_x4 wavelet_unet_dwt_haar_ms   dice         46              -0.0121                -0.0291              15             31      0.0173
+  21382 s             seed 1         down_x4 wavelet_unet_dwt_haar_ms cldice         46              -0.0210                -0.0315              13             33      0.0021
+  21382 s             seed 1         down_x4    wavelet_unet_swt_haar   dice         46              -0.0274                -0.0357              13             33      0.0008
+  21382 s             seed 1         down_x4    wavelet_unet_swt_haar cldice         46               0.0059                -0.0034              20             26      0.5298
+  21382 s             seed 1        original wavelet_unet_dwt_haar_ms   dice         46              -0.0042                -0.0222              18             28      0.1063
+  21382 s             seed 1        original wavelet_unet_dwt_haar_ms cldice         46              -0.0060                -0.0147              18             28      0.0598
+  21382 s             seed 1        original    wavelet_unet_swt_haar   dice         46              -0.0130                -0.0303              13             33      0.0100
+  21382 s             seed 1        original    wavelet_unet_swt_haar cldice         46              -0.0002                -0.0150              16             30      0.0804
+  21382 s             seed 2         down_x2 wavelet_unet_dwt_haar_ms   dice         46               0.0502                 0.0696              34             12      0.0000
+  21382 s             seed 2         down_x2 wavelet_unet_dwt_haar_ms cldice         46               0.0482                 0.0486              36             10      0.0000
+  21382 s             seed 2         down_x2    wavelet_unet_swt_haar   dice         46               0.0899                 0.1137              38              8      0.0000
+  21382 s             seed 2         down_x2    wavelet_unet_swt_haar cldice         46               0.0893                 0.0922              43              3      0.0000
+  21382 s             seed 2         down_x4 wavelet_unet_dwt_haar_ms   dice         46               0.0481                 0.0578              33             13      0.0000
+  21382 s             seed 2         down_x4 wavelet_unet_dwt_haar_ms cldice         46               0.0658                 0.0743              40              6      0.0000
+  21382 s             seed 2         down_x4    wavelet_unet_swt_haar   dice         46               0.0750                 0.0958              36             10      0.0000
+  21382 s             seed 2         down_x4    wavelet_unet_swt_haar cldice         46               0.0746                 0.0897              37              9      0.0000
+  21382 s             seed 2        original wavelet_unet_dwt_haar_ms   dice         46               0.0645                 0.0734              34             12      0.0000
+  21382 s             seed 2        original wavelet_unet_dwt_haar_ms cldice         46               0.0600                 0.0593              38              8      0.0000
+  21382 s             seed 2        original    wavelet_unet_swt_haar   dice         46               0.1018                 0.1227              36             10      0.0000
+  21382 s             seed 2        original    wavelet_unet_swt_haar cldice         46               0.1045                 0.1041              41              5      0.0000
+  21382 s  moyenne des seeds        blur_1mm                   unet3d   dice         46               0.0405                 0.0431              34             12      0.0011
+  21382 s  moyenne des seeds        blur_1mm                   unet3d cldice         46               0.0549                 0.0521              36             10      0.0000
+  21382 s  moyenne des seeds        blur_1mm wavelet_unet_dwt_haar_ms   dice         46              -0.0244                -0.0198              19             27      0.0661
+  21382 s  moyenne des seeds        blur_1mm wavelet_unet_dwt_haar_ms cldice         46              -0.0194                -0.0031              22             24      0.3180
+  21382 s  moyenne des seeds        blur_1mm    wavelet_unet_swt_haar   dice         46              -0.0253                -0.0271              17             29      0.0313
+  21382 s  moyenne des seeds        blur_1mm    wavelet_unet_swt_haar cldice         46              -0.0227                -0.0184              17             29      0.0927
+  21382 s  moyenne des seeds         down_x2                   unet3d   dice         46               0.0439                 0.0659              34             12      0.0003
+  21382 s  moyenne des seeds         down_x2                   unet3d cldice         46               0.0632                 0.0775              39              7      0.0000
+  21382 s  moyenne des seeds         down_x2 wavelet_unet_dwt_haar_ms   dice         46               0.0105                 0.0057              29             17      0.0948
+  21382 s  moyenne des seeds         down_x2 wavelet_unet_dwt_haar_ms cldice         46               0.0113                 0.0098              27             19      0.0766
+  21382 s  moyenne des seeds         down_x2    wavelet_unet_swt_haar   dice         46               0.0170                 0.0163              32             14      0.0081
+  21382 s  moyenne des seeds         down_x2    wavelet_unet_swt_haar cldice         46               0.0236                 0.0224              36             10      0.0001
+  21382 s  moyenne des seeds down_x2_noise20                   unet3d   dice         46               0.0426                 0.0405              41              5      0.0000
+  21382 s  moyenne des seeds down_x2_noise20                   unet3d cldice         46               0.0643                 0.0676              44              2      0.0000
+  21382 s  moyenne des seeds down_x2_noise20 wavelet_unet_dwt_haar_ms   dice         46              -0.0014                -0.0068              21             25      0.8967
+  21382 s  moyenne des seeds down_x2_noise20 wavelet_unet_dwt_haar_ms cldice         46               0.0122                 0.0126              31             15      0.0461
+  21382 s  moyenne des seeds down_x2_noise20    wavelet_unet_swt_haar   dice         46              -0.0096                 0.0019              23             23      0.6650
+  21382 s  moyenne des seeds down_x2_noise20    wavelet_unet_swt_haar cldice         46              -0.0025                -0.0009              22             24      0.8967
+  21382 s  moyenne des seeds         down_x4                   unet3d   dice         46               0.0269                 0.0335              31             15      0.0130
+  21382 s  moyenne des seeds         down_x4                   unet3d cldice         46               0.0494                 0.0681              37              9      0.0000
+  21382 s  moyenne des seeds         down_x4 wavelet_unet_dwt_haar_ms   dice         46               0.0001                -0.0025              20             26      0.4480
+  21382 s  moyenne des seeds         down_x4 wavelet_unet_dwt_haar_ms cldice         46               0.0039                -0.0001              23             23      0.9741
+  21382 s  moyenne des seeds         down_x4    wavelet_unet_swt_haar   dice         46              -0.0001                -0.0033              22             24      0.8626
+  21382 s  moyenne des seeds         down_x4    wavelet_unet_swt_haar cldice         46               0.0130                 0.0050              25             21      0.3564
+  21382 s  moyenne des seeds        original                   unet3d   dice         46               0.0561                 0.0674              39              7      0.0000
+  21382 s  moyenne des seeds        original                   unet3d cldice         46               0.0740                 0.0869              43              3      0.0000
+  21382 s  moyenne des seeds        original wavelet_unet_dwt_haar_ms   dice         46               0.0210                 0.0166              32             14      0.0010
+  21382 s  moyenne des seeds        original wavelet_unet_dwt_haar_ms cldice         46               0.0237                 0.0173              33             13      0.0003
+  21382 s  moyenne des seeds        original    wavelet_unet_swt_haar   dice         46               0.0287                 0.0315              36             10      0.0000
+  21382 s  moyenne des seeds        original    wavelet_unet_swt_haar cldice         46               0.0337                 0.0360              39              7      0.0000
+  21383 s  Dice relatif à l'image originale (médiane sur les volumes, seed 0) :
+  21383 s  condition                 blur_1mm  down_x2  down_x2_noise20  down_x4  original
+  21383 s  model
+  21383 s  unet2d                       0.968    0.986            0.941    0.933       1.0
+  21383 s  unet3d                       0.962    0.989            0.947    0.926       1.0
+  21383 s  wavelet_unet_dwt_haar_ms     0.905    0.953            0.928    0.845       1.0
+  21383 s  wavelet_unet_swt_haar        0.960    0.992            0.937    0.874       1.0
+  21400 s  Tableaux dans /kaggle/working/project/results/kaggle/metrics, figures dans /kaggle/working/project/results/kaggle/figures
+  21401 s  [ 5.66 h] fin
+  21406 s  -rw-r--r-- 1 root root 69M Oct 26 06:48 /kaggle/working/resultats_kaggle.zip
+  21409 s  /usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  21409 s    cells[i][c] = re.sub('\\\\\|', '|', cell)
+  21409 s  /usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  21409 s    text = re.sub(r'_', '\_', text) # Escape underscores in display text
+  21410 s  [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+  21410 s  [NbConvertApp] Writing 932229 bytes to __notebook__.ipynb
+  21413 s  [NbConvertApp] Converting notebook __notebook__.ipynb to html
+  21413 s  [NbConvertApp] Support files will be in __results___files/
+  21413 s  [NbConvertApp] Making directory __results___files
+  21413 s  [NbConvertApp] Making directory __results___files
+  21413 s  [NbConvertApp] Making directory __results___files
+  21413 s  [NbConvertApp] Writing 359088 bytes to __results__.html

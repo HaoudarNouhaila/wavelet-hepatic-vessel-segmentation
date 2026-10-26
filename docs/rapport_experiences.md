@@ -128,3 +128,78 @@ trop petit, sur un plateau de la métrique probablement lié à l'interpolation 
 cherché à ajuster ses paramètres. Ce cas est volontairement favorable : même volume, même
 modalité, transformation exactement représentable par le modèle de transformation, pas de bruit ni
 de déformation. Il ne représente pas un recalage entre deux examens, ni un recalage CT / micro-CT.
+
+## 8. Reprise sur GPU (Kaggle)
+
+### Conditions
+
+- Notebook `notebooks/05_kaggle_gpu.ipynb` exécuté en privé sur Kaggle (Tesla T4, 4 processeurs,
+  31 Go de RAM, Python 3.13, PyTorch 2.11) ; les 65 tests passent sur cet environnement. Le journal
+  nettoyé de l'exécution est dans `results/kaggle/journal_execution_kaggle.txt`.
+- Même séparation au niveau patient (seed 42), avec tous les cas : 212 / 45 / 46. Les 20 volumes de
+  test CPU font partie des 46.
+- Mêmes architectures, perte, optimiseur et augmentations que sur CPU. Réglages propres au GPU
+  (`configs/kaggle/gpu_2d.yaml`), identiques pour les trois modèles 2D : lots de 16, 4 000 patches
+  par époque, 40 époques au plus, patience de 10 époques et minimum de 15, validation sur une coupe
+  sur deux des 45 volumes, 4 processus de chargement. U-Net 3D (`configs/kaggle/gpu_3d.yaml`) :
+  patches de 24 x 160 x 160, lots de 4, 800 patches par époque, 60 époques au plus.
+- Évaluation : images originales et facteurs 2 et 4 pour tous les modèles ; flou de 1 mm et facteur
+  2 avec bruit pour la seed 0, comme sur CPU.
+
+Un premier lancement a échoué après 34 minutes : le dossier `src/data/` n'était pas sur GitHub, car
+la règle `data/` du `.gitignore` l'excluait en plus du dossier de données. La règle a été limitée à
+`/data/`, un test vérifie maintenant qu'aucun fichier source n'est ignoré, et le dépôt a été
+vérifié à partir d'un clone vierge avant le second lancement.
+
+Durées du second lancement : téléchargement de l'archive 15 min, prétraitement des 303 cas 5 min,
+neuf entraînements 2D de 16 à 28 min chacun (3,1 h au total), U-Net 3D 86 min, évaluation 62 min
+(une condition par processus), soit 5,9 h de session.
+
+### Entraînements
+
+| Expérience | Meilleure époque / époques | Dice vaisseaux en validation |
+|---|---|---|
+| U-Net 2D, seeds 0 / 1 / 2 | 8 / 18, 10 / 20, 16 / 26 | 0,533, 0,542, 0,441 |
+| Wavelet U-Net SWT, seeds 0 / 1 / 2 | 5 / 15, 10 / 20, 7 / 17 | 0,539, 0,528, 0,584 |
+| Wavelet U-Net multi-échelle, seeds 0 / 1 / 2 | 6 / 16, 10 / 20, 7 / 17 | 0,514, 0,530, 0,516 |
+| U-Net 3D, seed 0 | 56 / 60 | 0,567 |
+
+Les modèles 2D atteignent leur meilleur score de validation très tôt (5 à 16 époques) puis
+plafonnent. Le U-Net 3D progresse jusqu'à la fin du budget.
+
+### Résultats sur les 46 volumes de test (vaisseaux, images originales)
+
+| Modèle | Seed | Dice | clDice | HD95 (mm) | Précision | Rappel |
+|---|---|---|---|---|---|---|
+| U-Net 2D | 0 / 1 / 2 | 0,538 / 0,551 / 0,490 | 0,580 / 0,586 / 0,528 | 50,3 / 43,6 / 77,3 | 0,606 / 0,666 / 0,391 | 0,557 / 0,512 / 0,751 |
+| Wavelet SWT | 0 / 1 / 2 | 0,535 / 0,538 / 0,592 | 0,576 / 0,585 / 0,633 | 46,3 / 66,6 / 35,8 | 0,624 / 0,591 / 0,641 | 0,535 / 0,557 / 0,611 |
+| Wavelet multi-échelle | 0 / 1 / 2 | 0,540 / 0,546 / 0,555 | 0,597 / 0,580 / 0,588 | 40,4 / 58,3 / 69,6 | 0,589 / 0,536 / 0,526 | 0,578 / 0,623 / 0,646 |
+| U-Net 3D | 0 | 0,582 | 0,639 | 36,9 | 0,663 | 0,574 |
+
+- Le U-Net 2D seed 2 est un entraînement nettement moins bon que les deux autres : il sur-segmente
+  (précision 0,39, rappel 0,75). C'est lui qui donne l'avantage moyen aux variantes ondelettes ;
+  avec les seeds 0 et 1, elles ne font pas mieux que le U-Net (seed 0 : p = 0,75 et 0,86 pour le
+  Dice ; seed 1 : SWT - 0,013, p = 0,01 ; multi-échelle - 0,004, p = 0,11).
+- La réduction du HD95 observée sur CPU pour la variante multi-échelle ne se retrouve pas : elle
+  est vraie pour les seeds 0 et 2 (- 10,0 et - 7,7 mm) mais pas pour la seed 1 (+ 14,7 mm, p = 0,0001).
+- Sur les 20 volumes de test communs, le passage de 40 à 212 volumes d'entraînement fait gagner
+  + 0,019 de Dice au U-Net, + 0,024 à la variante SWT et + 0,004 à la variante multi-échelle
+  (moyennes des seeds), contre + 0,150 au U-Net 3D.
+- Robustesse au facteur 4 (Dice relatif à l'image originale) : U-Net 2D 0,91 / 0,98 / 0,99, SWT
+  0,82 / 0,95 / 0,94, multi-échelle 0,84 / 0,96 / 0,96, U-Net 3D 0,91. Pour chacune des trois seeds,
+  les deux variantes ondelettes perdent davantage que le U-Net de même seed. Avec le flou de 1 mm
+  (seed 0) : 0,96 pour le U-Net, 0,92 et 0,91 pour les variantes ondelettes, 0,96 pour le U-Net 3D.
+- Petits vaisseaux : rappel de la ligne centrale de 0,32 à 0,59 (rayon < 1,5 mm) selon le modèle
+  et la seed, 0,22 à 0,41 au facteur 4, alors que les vaisseaux de plus de 3 mm restent au-dessus
+  de 0,60.
+- Tumeurs : Dice de 0,30 à 0,42 selon le modèle et la seed (0,17 à 0,33 sur CPU).
+
+### Conclusion de la reprise sur GPU
+
+Avec cinq fois plus de données d'entraînement et une seed de plus, la conclusion sur la question de
+recherche ne change pas : les sous-bandes de Haar, en entrée ou injectées dans l'encodeur,
+n'améliorent pas de façon robuste la segmentation des vaisseaux par rapport au U-Net standard. Le
+seul effet constant sur les trois seeds est défavorable aux ondelettes : une moins bonne
+robustesse à la baisse de résolution, cohérente avec la disparition des coefficients de détail sur
+les images dégradées. Le gain le plus net vient du passage au U-Net 3D entraîné sur toutes les
+données.

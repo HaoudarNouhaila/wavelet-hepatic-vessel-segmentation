@@ -30,11 +30,13 @@ Pour y répondre, j'ai :
 - mesuré leur robustesse à des images artificiellement dégradées ;
 - analysé la détection des vaisseaux selon leur calibre.
 
-En résumé, dans mes conditions expérimentales (CPU, 40 volumes d'entraînement, deux seeds par
-modèle), les ondelettes n'ont pas apporté d'amélioration robuste du Dice : le sens de la différence
-avec le U-Net change d'une seed à l'autre. La variante multi-échelle donne, pour les deux seeds, une
-distance de surface (HD95) plus faible et moins de faux positifs isolés. Quand la résolution baisse,
-tous les modèles perdent d'abord les vaisseaux de moins de 1,5 mm de rayon.
+En résumé, sur CPU (40 volumes d'entraînement, deux seeds) puis sur GPU (212 volumes, trois
+seeds), les ondelettes n'ont pas apporté d'amélioration robuste du Dice : le sens de la différence
+avec le U-Net change d'une seed à l'autre. Sur GPU, les deux variantes ondelettes se sont montrées
+moins robustes que le U-Net standard à une forte baisse de résolution, pour les trois seeds. Quand la
+résolution baisse, tous les modèles perdent d'abord les vaisseaux de moins de 1,5 mm de rayon. Le
+meilleur modèle obtenu est le U-Net 3D entraîné sur GPU avec tous les cas (Dice 0,582, clDice
+0,639 sur 46 volumes de test).
 
 ## Jeu de données
 
@@ -45,10 +47,11 @@ pixels, mais l'espacement varie selon les patients (0,57 à 0,98 mm dans le plan
 les coupes).
 
 J'ai séparé les 303 cas annotés en entraînement, validation et test (70 / 15 / 15 %, seed 42) au
-niveau du patient. Faute de GPU et à cause d'une connexion lente, j'ai utilisé un sous-ensemble de
-68 cas : 40 pour l'entraînement, 8 pour la validation et 20 pour le test. Ces cas ont été
-téléchargés individuellement depuis l'archive officielle, grâce à des requêtes HTTP partielles sur
-le fichier tar (sans télécharger les 9,3 Go).
+niveau du patient. Sur CPU, faute de GPU et à cause d'une connexion lente, j'ai utilisé un
+sous-ensemble de 68 cas : 40 pour l'entraînement, 8 pour la validation et 20 pour le test. Ces cas
+ont été téléchargés individuellement depuis l'archive officielle, grâce à des requêtes HTTP
+partielles sur le fichier tar (sans télécharger les 9,3 Go). Sur GPU (Kaggle), j'ai repris la même
+séparation avec tous les cas : 212 / 45 / 46. Les 20 volumes de test CPU font partie des 46.
 
 Détails et statistiques : [docs/donnees.md](docs/donnees.md) et
 [notebooks/01_exploration.ipynb](notebooks/01_exploration.ipynb).
@@ -81,8 +84,9 @@ Détails : [docs/methodologie.md](docs/methodologie.md) et
 
 ## Expériences
 
-Toutes les expériences ont été lancées sur le CPU d'un ordinateur portable (Intel Core i5-1135G7,
-sans GPU) ; le déroulé complet est dans [docs/rapport_experiences.md](docs/rapport_experiences.md).
+Les expériences 1 à 6 ont été lancées sur le CPU d'un ordinateur portable (Intel Core i5-1135G7,
+sans GPU), la 7 sur un GPU Kaggle ; le déroulé complet est dans
+[docs/rapport_experiences.md](docs/rapport_experiences.md).
 
 1. Inspection des données et analyse des sous-bandes ondelettes (décomposition, reconstruction,
    amplitude dans et autour des vaisseaux).
@@ -96,8 +100,14 @@ sans GPU) ; le déroulé complet est dans [docs/rapport_experiences.md](docs/rap
    d'origine. Toutes les conditions pour la seed 0 ; facteurs 2 et 4 pour la seed 1.
 5. Extension 3D : U-Net 3D de MONAI entraîné une fois (seed 0) par patches de 16 x 128 x 128.
 6. Extension facultative : recalage SimpleITK sur des transformations synthétiques connues.
+7. Reprise sur GPU (Kaggle, Tesla T4, notebook [05](notebooks/05_kaggle_gpu.ipynb)) avec tous les
+   cas annotés : trois modèles 2D x trois seeds, mêmes architectures et mêmes réglages de base,
+   4 000 patches par époque, puis un U-Net 3D plus grand (patches de 24 x 160 x 160, 60 époques).
+   Évaluation sur les 46 volumes de test, dans les mêmes conditions que sur CPU. Durée : 5,7 h.
 
 ## Résultats
+
+### Sur CPU (40 / 8 / 20 cas, deux seeds)
 
 Vaisseaux, 20 volumes de test, images originales, moyenne sur les volumes
 (`results/metrics/test_per_seed.csv`) :
@@ -122,8 +132,8 @@ Ce que j'en retiens :
   pas en compte la variabilité entre entraînements.
 - **Un effet de même sens pour les deux seeds** : la variante multi-échelle réduit le HD95
   (- 8,2 mm, p = 0,03 pour la seed 0 ; - 20,6 mm, p = 0,0003 pour la seed 1) et produit moins de
-  composantes isolées sans recouvrement avec la référence. Avec deux seeds seulement, c'est une
-  piste et non une conclusion.
+  composantes isolées sans recouvrement avec la référence. Avec deux seeds seulement, c'était une
+  piste : elle ne s'est pas confirmée sur GPU (voir plus bas).
 - **Les petits vaisseaux sont le point faible de tous les modèles** : le rappel de la ligne centrale
   est de 0,43 à 0,57 pour un rayon local inférieur à 1,5 mm, contre 0,72 à 0,82 entre 1,5 et 3 mm.
 - **Résolution** : un flou de 1 mm ou un facteur 2 changent peu les résultats. Au facteur 4, le Dice
@@ -145,9 +155,48 @@ Ce que j'en retiens :
 
 ![Exemple de prédictions et de cartes d'erreurs (volume au Dice médian pour le U-Net)](results/figures/predictions/comparaison_median_hepaticvessel_199.png)
 
+### Sur GPU (Kaggle, 212 / 45 / 46 cas, trois seeds)
+
+Vaisseaux, 46 volumes de test, moyenne sur les volumes puis moyenne et écart-type sur les seeds
+(`results/kaggle/metrics/test_per_seed.csv`). La dernière colonne donne le Dice au facteur 4
+rapporté au Dice sur les images originales :
+
+| Modèle | Dice (seeds 0 / 1 / 2) | Dice moyen | clDice | HD95 (mm) | Dice relatif x4 |
+|---|---|---|---|---|---|
+| U-Net 2D | 0,538 / 0,551 / 0,490 | 0,526 ± 0,032 | 0,565 ± 0,031 | 57,1 ± 17,8 | 0,91 / 0,98 / 0,99 |
+| Wavelet U-Net, SWT en entrée | 0,535 / 0,538 / 0,592 | 0,555 ± 0,032 | 0,598 ± 0,030 | 49,6 ± 15,7 | 0,82 / 0,95 / 0,94 |
+| Wavelet U-Net, DWT multi-échelle | 0,540 / 0,546 / 0,555 | 0,547 ± 0,007 | 0,588 ± 0,009 | 56,1 ± 14,7 | 0,84 / 0,96 / 0,96 |
+| U-Net 3D (MONAI, une seed) | 0,582 | 0,582 | 0,639 | 36,9 | 0,91 |
+
+Ce que j'en retiens :
+
+- **Plus de données aide peu les modèles 2D.** Sur les 20 volumes de test communs avec le CPU, le
+  Dice moyen passe de 0,519 à 0,538 pour le U-Net, de 0,539 à 0,563 pour la variante SWT et de
+  0,547 à 0,551 pour la variante multi-échelle. Le U-Net 3D, lui, passe de 0,441 à 0,591.
+- **Toujours pas de gain robuste des ondelettes.** Seed 0 : pas de différence de Dice (p = 0,75 et
+  0,86). Seed 1 : variantes ondelettes un peu moins bonnes (SWT - 0,013, p = 0,01). Seed 2 :
+  nettement meilleures, mais parce que l'entraînement du U-Net de cette seed est mauvais (précision
+  0,39). La variante multi-échelle est la plus stable d'une seed à l'autre. L'avantage de HD95 vu sur
+  CPU ne se confirme pas (seed 1 : + 14,7 mm par rapport au U-Net).
+- **Les ondelettes rendent les modèles moins robustes à la résolution.** Au facteur 4, le U-Net 2D
+  garde 91 à 99 % de son Dice, les variantes ondelettes 82 à 96 %, et c'est moins que le U-Net de
+  même seed pour chacune des trois seeds. Même tendance avec le flou de 1 mm (seed 0). C'est
+  cohérent avec l'analyse des sous-bandes : sur une image dégradée, les canaux de détail changent
+  fortement de distribution par rapport à l'entraînement.
+- **Le U-Net 3D est le meilleur modèle** (Dice 0,582, clDice 0,639, HD95 36,9 mm), meilleur que le
+  U-Net 2D de même seed sur 36 volumes sur 46 (p < 0,001). Il n'a été entraîné qu'une fois, et sa
+  meilleure époque est la 56e sur 60 : un entraînement plus long pourrait encore l'améliorer.
+- **Petits vaisseaux** : le rappel de la ligne centrale pour un rayon inférieur à 1,5 mm va de 0,32
+  à 0,59 selon le modèle et la seed, et tombe à 0,22-0,41 au facteur 4.
+
+![Dice, clDice, HD95 et précision par modèle et par seed, sur GPU](results/kaggle/figures/comparison/metriques_par_seed.png)
+
+![Effet de la résolution pour chaque entraînement, sur GPU](results/kaggle/figures/resolution/metriques_selon_resolution_par_seed.png)
+
 Les autres figures (données, sous-bandes, courbes d'apprentissage, rappel par calibre, rendu 3D,
-cas difficiles, recalage) sont dans `results/figures/` et commentées dans les notebooks
-[02](notebooks/02_wavelet_analysis.ipynb) et [03](notebooks/03_model_comparison.ipynb).
+cas difficiles, recalage) sont dans `results/figures/` et `results/kaggle/figures/`, et commentées
+dans les notebooks [02](notebooks/02_wavelet_analysis.ipynb) et
+[03](notebooks/03_model_comparison.ipynb).
 
 ## Installation
 
@@ -209,7 +258,7 @@ simple pour Google Colab.
 Organisation du dépôt :
 
 ```
-configs/        fichiers YAML (données, modèles, évaluation)
+configs/        fichiers YAML (données, modèles, évaluation) ; configs/kaggle/ pour le GPU
 src/data/       lecture des NIfTI, séparation au niveau patient, Dataset PyTorch, téléchargement partiel
 src/preprocessing/  normalisation, augmentations, dégradations de résolution
 src/wavelets/   transformées en ondelettes (DWT, SWT) et normalisation des sous-bandes
@@ -221,22 +270,25 @@ src/registration/   recalage SimpleITK sur transformations synthétiques
 scripts/        points d'entrée en ligne de commande
 notebooks/      exploration, ondelettes, comparaison des modèles, entraînement GPU
 tests/          tests unitaires et d'intégration (pytest)
-results/        métriques (CSV) et figures obtenues
-experiments/    configurations et historiques d'entraînement (checkpoints non versionnés)
+results/        métriques (CSV) et figures obtenues sur CPU ; results/kaggle/ pour le GPU
+experiments/    configurations et historiques d'entraînement (checkpoints non versionnés) ;
+                experiments/kaggle/ pour le GPU
 docs/           données, méthodologie, rapport d'expériences
 references/     références bibliographiques
 ```
 
 ## Limites
 
-- **Puissance statistique** : deux seeds par modèle et 20 volumes de test ne suffisent pas pour
-  séparer l'effet du modèle de la variabilité entre entraînements. Il faudrait au moins 5 seeds.
-- **Données et calcul** : 40 volumes d'entraînement sur 212 disponibles, un U-Net réduit
-  (16 filtres au premier étage), 25 époques au plus, tout sur CPU. Les scores sont nettement en
-  dessous des meilleures méthodes publiées sur ce jeu de données, qui utilisent des réseaux 3D
-  plus grands, tous les cas et des GPU.
-- **Sélection des modèles** : la validation porte sur 8 volumes et une coupe sur trois ; elle est
-  bruitée d'une époque à l'autre.
+- **Puissance statistique** : deux seeds sur CPU et trois sur GPU ne suffisent pas pour séparer
+  complètement l'effet du modèle de la variabilité entre entraînements, qui reste du même ordre que
+  les écarts entre modèles 2D. Il faudrait au moins 5 seeds par modèle.
+- **Capacité des modèles 2D** : le U-Net est volontairement réduit (16 filtres au premier étage)
+  pour tenir sur CPU, et les mêmes architectures ont été gardées sur GPU pour comparer à l'identique.
+  Avec 212 volumes, ces modèles atteignent leur meilleur Dice de validation dès 5 à 16 époques et
+  gagnent peu par rapport à 40 volumes : leur taille limite probablement les résultats. Les scores
+  restent en dessous des meilleures méthodes publiées sur ce jeu de données.
+- **Sélection des modèles** : la validation porte sur 8 volumes (CPU) ou 45 volumes (GPU), une coupe
+  sur trois ou sur deux ; elle reste bruitée d'une époque à l'autre.
 - **Annotations** : certaines branches fines visibles ne semblent pas annotées, ce qui pénalise les
   modèles qui les segmentent et rend le rappel des petits vaisseaux difficile à interpréter.
 - **Anisotropie** : la plupart des volumes ont des coupes de 5 mm. Les modèles 2D traitent les coupes
@@ -248,15 +300,18 @@ references/     références bibliographiques
 - **Ondelettes** : seules Haar (SWT niveau 1 et DWT niveaux 1-2) ont été entraînées ; les
   statistiques de db2 sont calculées mais ce modèle n'a pas été entraîné. Les transformées sont
   fixes (PyWavelets), sans couche ondelette apprise ou différentiable.
-- **U-Net 3D** : un seul entraînement, avec un budget de calcul limité ; ce n'est pas une
-  comparaison 2D / 3D aboutie.
-- **Interruptions** : la machine s'est mise en veille plusieurs fois pendant les calculs. Cela n'a
-  pas d'effet sur les résultats (les processus reprennent à l'identique), mais les durées brutes
-  des fichiers `summary.json` incluent ces périodes.
+- **U-Net 3D** : un seul entraînement sur CPU et un seul sur GPU ; le modèle 3D n'existe pas en
+  version ondelettes. Sa supériorité sur les modèles 2D est nette, mais ce n'est pas une
+  comparaison 2D / 3D aboutie (une seule seed, réglages différents).
+- **Interruptions** : la machine s'est mise en veille plusieurs fois pendant les calculs CPU. Cela
+  n'a pas d'effet sur les résultats (les processus reprennent à l'identique), mais les durées brutes
+  des fichiers `summary.json` incluent ces périodes. Un premier lancement sur Kaggle a échoué faute
+  du dossier `src/data` sur GitHub (voir le rapport) ; seul le second lancement est utilisé.
 
-Pistes d'amélioration : plus de seeds et tous les cas d'entraînement sur GPU (notebook 04), une
-couche DWT différentiable intégrée au réseau, des ondelettes à support plus long (db2, db4), une
-augmentation de données par dégradation de la résolution, et un post-traitement limitant les
+Pistes d'amélioration : plusieurs seeds pour le U-Net 3D et une variante 3D guidée par ondelettes,
+des modèles 2D plus larges, une augmentation de données par dégradation de la résolution (qui
+pourrait corriger la fragilité des variantes ondelettes), une couche DWT différentiable intégrée au
+réseau, des ondelettes à support plus long (db2, db4) et un post-traitement limitant les
 prédictions au foie.
 
 ## Références
