@@ -153,8 +153,10 @@ def train(cfg: dict, run_dir: Path, log=print) -> dict:
 
     train_set = PatchDataset2D(processed, train_ids, tr["patch_size"], tr["samples_per_epoch"], tr["fg_prob"],
                                fill_value, wavelet, tr.get("augmentation"), seed)
+    # Pas de persistent_workers : les processus de chargement sont recréés à chaque époque et
+    # reçoivent ainsi le numéro d'époque à jour (sinon ils tireraient toujours les mêmes patches).
     loader = DataLoader(train_set, batch_size=tr["batch_size"], shuffle=False, num_workers=tr.get("num_workers", 0),
-                        persistent_workers=tr.get("num_workers", 0) > 0, drop_last=True)
+                        pin_memory=device.type == "cuda", drop_last=True)
     val_cases = [load_processed(processed / cid) for cid in val_ids]
 
     model = build_model_2d(model_cfg).to(device)
@@ -167,6 +169,7 @@ def train(cfg: dict, run_dir: Path, log=print) -> dict:
 
     history = []
     best_epoch = 0
+    stopped_by_time = False
     start_time = time.time()
     for epoch in range(1, tr["max_epochs"] + 1):
         t0 = time.time()
@@ -202,6 +205,11 @@ def train(cfg: dict, run_dir: Path, log=print) -> dict:
         if stopper.should_stop:
             log(f"Early stopping à l'époque {epoch} (meilleure époque : {best_epoch})")
             break
+        if tr.get("max_minutes") and (time.time() - start_time) / 60 > tr["max_minutes"] \
+                and epoch < tr["max_epochs"]:
+            log(f"Limite de temps atteinte à l'époque {epoch} (meilleure époque : {best_epoch})")
+            stopped_by_time = True
+            break
 
     summary = {
         "run": run_dir.name,
@@ -210,6 +218,7 @@ def train(cfg: dict, run_dir: Path, log=print) -> dict:
         "epochs_run": len(history),
         "total_time_min": (time.time() - start_time) / 60,
         "parameters": count_parameters(model),
+        "stopped_by_time_limit": stopped_by_time,
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     return summary

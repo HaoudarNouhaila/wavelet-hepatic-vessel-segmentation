@@ -1,0 +1,25 @@
+# Réglages GPU superposés aux configurations 2D (scripts/train.py --override) :
+#   python scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 0
+# Les architectures, la perte, l'optimiseur et les augmentations restent ceux de base_2d.yaml ;
+# seuls la quantité de données et la durée d'entraînement augmentent, de la même façon pour
+# les trois modèles.
+
+experiment:
+  output_dir: experiments/kaggle
+
+data:
+  split_file: data/splits/split_seed42_full.json
+  stats_file: data/processed_full/intensity_stats.json
+  wavelet_stats_file: data/processed_full/wavelet_stats.json
+  processed_dir: data/processed_full
+
+training:
+  device: auto
+  batch_size: 16
+  samples_per_epoch: 4000
+  max_epochs: 40
+  early_stopping_patience: 10
+  min_epochs: 15
+  num_workers: 4
+  val_batch_size: 32
+  val_slice_stride: 2

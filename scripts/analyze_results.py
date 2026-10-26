@@ -124,11 +124,14 @@ def main() -> None:
     parser.add_argument("--split", default="test")
     parser.add_argument("--eval-config", default="configs/evaluation.yaml")
     parser.add_argument("--no-figures", action="store_true")
+    parser.add_argument("--results-dir", default="results", help="contient metrics/ et figures/")
+    parser.add_argument("--experiments-dir", default="experiments", help="dossiers d'entraînement (historiques)")
     args = parser.parse_args()
     eval_cfg = load_config(resolve(args.eval_config))
     data_cfg = load_config(resolve(eval_cfg["data_config"]))
-    metrics_dir, fig_dir = resolve("results/metrics"), resolve("results/figures")
+    metrics_dir, fig_dir = resolve(args.results_dir) / "metrics", resolve(args.results_dir) / "figures"
     df = pd.read_csv(metrics_dir / f"{args.split}_per_volume.csv")
+    n_volumes = df["case_id"].nunique()
 
     summary = summary_table(df)
     summary.to_csv(metrics_dir / f"{args.split}_summary.csv", index=False)
@@ -144,7 +147,7 @@ def main() -> None:
     if args.no_figures:
         return
 
-    histories = load_histories(resolve("experiments"))
+    histories = load_histories(resolve(args.experiments_dir))
     if histories:
         plots.plot_training_curves(histories, fig_dir / "training" / "courbes_apprentissage.png",
                                    "Apprentissage des modèles 2D (traits clairs : autres seeds)")
@@ -174,7 +177,7 @@ def main() -> None:
     plots.plot_degradation(per_case_cond, [("dice", "Dice vaisseaux"), ("cldice", "clDice vaisseaux"),
                                            ("hd95_mm", "HD95 vaisseaux (mm)")], conditions, CONDITION_LABELS,
                            fig_dir / "resolution" / "metriques_selon_resolution.png",
-                           "Effet de la dégradation de la résolution (seed 0, moyenne ± écart-type sur 20 volumes)")
+                           f"Effet de la dégradation de la résolution (seed 0, moyenne ± écart-type sur {n_volumes} volumes)")
     plots.plot_degradation(per_case_cond, [(b, f"Rappel ligne centrale, {b.replace('cl_recall_', '')}") for b in bins],
                            conditions, CONDITION_LABELS, fig_dir / "resolution" / "rappel_par_calibre.png",
                            "Rappel de la ligne centrale de référence selon le rayon local du vaisseau (seed 0)")
@@ -182,7 +185,7 @@ def main() -> None:
     plots.plot_degradation_by_seed(vessel_seeds, [("dice", "Dice vaisseaux"), ("cldice", "clDice vaisseaux"),
                                                   ("hd95_mm", "HD95 vaisseaux (mm)")], conditions, CONDITION_LABELS,
                                    fig_dir / "resolution" / "metriques_selon_resolution_par_seed.png",
-                                   "Effet de la résolution pour chaque entraînement (moyenne sur 20 volumes)")
+                                   f"Effet de la résolution pour chaque entraînement (moyenne sur {n_volumes} volumes)")
     plots.plot_seed_comparison(vessel_seeds[vessel_seeds["condition"] == "original"],
                                [("dice", "Dice vaisseaux"), ("cldice", "clDice vaisseaux"),
                                 ("hd95_mm", "HD95 vaisseaux (mm)"), ("precision", "Précision vaisseaux")],

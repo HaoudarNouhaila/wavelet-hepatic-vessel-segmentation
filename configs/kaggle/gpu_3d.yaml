@@ -1,0 +1,22 @@
+# Réglages GPU pour le U-Net 3D (facultatif, lancé seulement s'il reste du temps sur Kaggle) :
+#   python scripts/train.py --config configs/unet_3d.yaml --override configs/kaggle/gpu_3d.yaml --seed 0
+
+experiment:
+  output_dir: experiments/kaggle
+
+data:
+  split_file: data/splits/split_seed42_full.json
+  stats_file: data/processed_full/intensity_stats.json
+  processed_dir: data/processed_full
+
+training:
+  device: auto
+  patch_size: [24, 160, 160]
+  roi_size: [32, 256, 256]
+  batch_size: 4
+  samples_per_epoch: 800
+  max_epochs: 60
+  val_every: 2
+  early_stopping_patience: 8
+  min_epochs: 8
+  num_workers: 4

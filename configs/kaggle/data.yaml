@@ -1,0 +1,20 @@
+# Données pour l'entraînement sur GPU (Kaggle) : même séparation au niveau patient que sur CPU
+# (seed 42, 70 / 15 / 15), mais avec tous les cas de chaque ensemble. Les 40 / 8 / 20 cas du
+# sous-ensemble CPU sont les premiers de chaque liste : le test CPU est inclus dans le test GPU.
+base: ../data.yaml
+
+split:
+  file: data/splits/split_seed42_full.json
+  subset_sizes:
+    train: 212
+    val: 45
+    test: 46
+
+inspection:
+  inspection_csv: results/kaggle/metrics/dataset_inspection.csv
+  figures_dir: results/kaggle/figures/dataset
+
+preprocessing:
+  processed_dir: data/processed_full
+  stats_file: data/processed_full/intensity_stats.json
+  wavelet_stats_file: data/processed_full/wavelet_stats.json

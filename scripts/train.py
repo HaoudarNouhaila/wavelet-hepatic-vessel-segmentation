@@ -4,6 +4,10 @@ Exemples :
     python scripts/train.py --config configs/unet_2d.yaml --seed 0
     python scripts/train.py --config configs/wavelet_unet.yaml --seed 0
     python scripts/train.py --config configs/unet_3d.yaml --seed 0
+    python scripts/train.py --config configs/unet_2d.yaml --override configs/kaggle/gpu_2d.yaml --seed 0
+
+`--override` superpose un ou plusieurs fichiers YAML à la configuration (par exemple les
+réglages GPU de Kaggle), sans modifier les fichiers d'origine.
 """
 
 from __future__ import annotations
@@ -15,20 +19,24 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.training.trainer import train
-from src.utils import load_config, resolve
+from src.utils import deep_merge, load_config, resolve
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--config", required=True)
+    parser.add_argument("--override", nargs="*", default=[], help="fichiers YAML superposés à la configuration")
     parser.add_argument("--seed", type=int, help="remplace experiment.seed")
     parser.add_argument("--max-epochs", type=int, help="remplace training.max_epochs (tests rapides)")
     parser.add_argument("--samples-per-epoch", type=int, help="remplace training.samples_per_epoch")
     parser.add_argument("--name", help="nom du dossier de sortie (par défaut <nom>_seed<seed>)")
     parser.add_argument("--threads", type=int, help="nombre de threads CPU utilisés par PyTorch")
+    parser.add_argument("--max-minutes", type=float, help="durée maximale ; le meilleur modèle est conservé")
     args = parser.parse_args()
 
     cfg = load_config(resolve(args.config))
+    for path in args.override:
+        cfg = deep_merge(cfg, load_config(resolve(path)))
     if args.seed is not None:
         cfg["experiment"]["seed"] = args.seed
     if args.max_epochs:
@@ -37,6 +45,8 @@ def main() -> None:
         cfg["training"]["samples_per_epoch"] = args.samples_per_epoch
     if args.threads:
         cfg["training"]["num_threads"] = args.threads
+    if args.max_minutes:
+        cfg["training"]["max_minutes"] = args.max_minutes
     name = args.name or f"{cfg['experiment']['name']}_seed{cfg['experiment']['seed']}"
     run_dir = resolve(cfg["experiment"]["output_dir"]) / name
     run_dir.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,19 @@
+# Évaluation des modèles entraînés sur GPU (46 volumes de test). La liste des expériences est
+# complétée par le notebook 05 avec les entraînements effectivement terminés.
+
+data_config: configs/kaggle/data.yaml
+split: test
+device: auto
+
+runs: []
+
+conditions:
+  original: {}
+  blur_1mm: {blur_sigma_mm: 1.0}
+  down_x2: {downsample: 2}
+  down_x4: {downsample: 4}
+  down_x2_noise20: {downsample: 2, noise_hu: 20}
+
+output_csv: results/kaggle/metrics/{split}_per_volume.csv
+save_predictions: true
+predictions_dir: data/predictions_kaggle/{split}

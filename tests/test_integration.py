@@ -87,6 +87,21 @@ def test_same_patches_for_all_models(prepared):
         torch.testing.assert_close(sa["label"], sb["label"])
 
 
+def test_workers_see_new_patches_each_epoch(prepared):
+    """Avec des processus de chargement, chaque époque doit tirer de nouveaux patches."""
+    ds = PatchDataset2D(prepared["processed"], prepared["split"]["train"], 32, 4, 0.7, -3.0, seed=3)
+    loader = DataLoader(ds, batch_size=4, num_workers=1)
+    batches = []
+    for epoch in (1, 2):
+        ds.set_epoch(epoch)
+        batches.append(next(iter(loader))["image"])
+    assert not torch.equal(batches[0], batches[1])
+    ds.set_epoch(1)
+    torch.testing.assert_close(next(iter(loader))["image"], batches[0])  # reproductible
+    import pickle
+    assert len(pickle.dumps(ds)) < 100_000  # seuls les chemins sont transmis aux processus
+
+
 def test_split_has_no_leakage_into_training(prepared):
     ds = PatchDataset2D(prepared["processed"], prepared["split"]["train"], 32, 4, 0.7, -3.0)
     assert set(ds.case_ids).isdisjoint(prepared["split"]["val"] + prepared["split"]["test"])

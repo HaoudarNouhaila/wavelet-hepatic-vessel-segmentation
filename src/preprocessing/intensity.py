@@ -12,11 +12,15 @@ from __future__ import annotations
 import numpy as np
 
 
-def sample_foreground(image: np.ndarray, label: np.ndarray, max_voxels: int, rng: np.random.Generator) -> np.ndarray:
-    values = image[label > 0]
+def sample_values(values: np.ndarray, max_voxels: int, rng: np.random.Generator) -> np.ndarray:
+    """Tire au plus `max_voxels` valeurs sans remise."""
     if values.size > max_voxels:
         values = rng.choice(values, max_voxels, replace=False)
     return values.astype(np.float64)
+
+
+def sample_foreground(image: np.ndarray, label: np.ndarray, max_voxels: int, rng: np.random.Generator) -> np.ndarray:
+    return sample_values(image[label > 0], max_voxels, rng)
 
 
 def fit_intensity_stats(samples: list[np.ndarray], lower: float = 0.5, upper: float = 99.5) -> dict[str, float]:

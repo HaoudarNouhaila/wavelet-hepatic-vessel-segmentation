@@ -198,9 +198,13 @@ python scripts/train.py --config configs/unet_3d.yaml --seed 0
 python scripts/registration_demo.py
 ```
 
-`scripts/run_all.sh` enchaîne l'ensemble. Le notebook
-[04_entrainement_gpu_colab.ipynb](notebooks/04_entrainement_gpu_colab.ipynb) permet de relancer les
-expériences sur GPU (Google Colab ou Kaggle) avec les 303 cas.
+`scripts/run_all.sh` enchaîne l'ensemble. Pour le GPU, le notebook
+[05_kaggle_gpu.ipynb](notebooks/05_kaggle_gpu.ipynb) relance la comparaison sur Kaggle avec tous les
+cas annotés (212 / 45 / 46) et trois seeds par modèle. Il appelle `scripts/run_kaggle.py`, qui
+applique un budget de temps adapté aux sessions de 12 h et reprend là où il s'est arrêté ; les
+réglages GPU sont dans `configs/kaggle/` et les résultats dans `results/kaggle/`, séparés des
+résultats CPU. Le notebook [04](notebooks/04_entrainement_gpu_colab.ipynb) est une version plus
+simple pour Google Colab.
 
 Organisation du dépôt :
 

@@ -29,6 +29,8 @@ def main() -> None:
     parser.add_argument("--conditions", nargs="*", help="sous-ensemble des conditions à évaluer")
     parser.add_argument("--split", help="train, val ou test (remplace la configuration)")
     parser.add_argument("--max-cases", type=int)
+    parser.add_argument("--output-csv", help="fichier de sortie (remplace output_csv, utile en parallèle)")
+    parser.add_argument("--threads", type=int, help="threads CPU utilisés par PyTorch")
     args = parser.parse_args()
 
     cfg = load_config(resolve(args.config))
@@ -43,10 +45,10 @@ def main() -> None:
     if missing:
         raise FileNotFoundError(f"Checkpoints absents : {missing}")
 
-    torch.set_num_threads(cfg.get("num_threads", torch.get_num_threads()))
+    torch.set_num_threads(args.threads or cfg.get("num_threads", torch.get_num_threads()))
     device = get_device(cfg.get("device", "auto"))
     runs = [load_run(r, device) for r in run_dirs]
-    out_csv = resolve(cfg["output_csv"].format(split=split_name))
+    out_csv = resolve(args.output_csv or cfg["output_csv"].format(split=split_name))
     existing = pd.read_csv(out_csv) if out_csv.exists() else None
     pred_dir = resolve(cfg["predictions_dir"].format(split=split_name)) if cfg.get("save_predictions") else None
 

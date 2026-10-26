@@ -15,7 +15,7 @@ from monai.inferers import sliding_window_inference
 from monai.networks.nets import UNet
 from torch.utils.data import Dataset
 
-from src.preprocessing.pipeline import load_processed
+from src.data.dataset2d import LazyCases
 
 
 def build_unet3d(cfg: dict) -> UNet:
@@ -30,14 +30,14 @@ def build_unet3d(cfg: dict) -> UNet:
     )
 
 
-class PatchDataset3D(Dataset):
+class PatchDataset3D(LazyCases, Dataset):
     """Patches 3D (Z, H, W) tirés comme en 2D : centrés sur un voxel annoté avec
     probabilité `fg_prob`, sinon au hasard. Augmentations : retournements dans
     le plan et variation d'intensité."""
 
     def __init__(self, processed_dir, case_ids, patch_size=(16, 128, 128), samples_per_epoch: int = 200,
                  fg_prob: float = 0.67, fill_value: float = -3.0, augment: bool = True, seed: int = 0):
-        self.cases = [load_processed(Path(processed_dir) / cid) for cid in case_ids]
+        super().__init__([Path(processed_dir) / cid for cid in case_ids])
         self.patch_size = tuple(patch_size)
         self.samples_per_epoch = samples_per_epoch
         self.fg_prob = fg_prob

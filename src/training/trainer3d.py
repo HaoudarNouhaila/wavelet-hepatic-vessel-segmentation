@@ -49,7 +49,8 @@ def train_3d(cfg: dict, run_dir: Path, log=print) -> dict:
 
     dataset = PatchDataset3D(processed, train_ids, tr["patch_size"], tr["samples_per_epoch"], tr["fg_prob"], fill,
                              True, exp["seed"])
-    loader = DataLoader(dataset, batch_size=tr["batch_size"], shuffle=False, num_workers=0, drop_last=True)
+    loader = DataLoader(dataset, batch_size=tr["batch_size"], shuffle=False, num_workers=tr.get("num_workers", 0),
+                        pin_memory=device.type == "cuda", drop_last=True)
     val_cases = [load_processed(processed / cid) for cid in val_ids]
     model = build_unet3d(model_cfg).to(device)
     criterion = build_loss(cfg.get("loss", {}))
@@ -60,6 +61,7 @@ def train_3d(cfg: dict, run_dir: Path, log=print) -> dict:
     log(f"U-Net 3D : {n_params:,} paramètres, {len(train_ids)} volumes d'entraînement, device={device}")
 
     history, best_epoch, t_start = [], 0, time.time()
+    stopped_by_time = False
     for epoch in range(1, tr["max_epochs"] + 1):
         t0 = time.time()
         model.train()
@@ -95,7 +97,12 @@ def train_3d(cfg: dict, run_dir: Path, log=print) -> dict:
         if stopper.should_stop:
             log(f"Early stopping à l'époque {epoch}")
             break
+        if tr.get("max_minutes") and (time.time() - t_start) / 60 > tr["max_minutes"] and epoch < tr["max_epochs"]:
+            log(f"Limite de temps atteinte à l'époque {epoch}")
+            stopped_by_time = True
+            break
     summary = {"run": run_dir.name, "best_epoch": best_epoch, "best_val_dice_vessel": stopper.best,
-               "epochs_run": len(history), "total_time_min": (time.time() - t_start) / 60, "parameters": n_params}
+               "epochs_run": len(history), "total_time_min": (time.time() - t_start) / 60, "parameters": n_params,
+               "stopped_by_time_limit": stopped_by_time}
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     return summary
