@@ -1,0 +1,46 @@
+# Optimisation des métriques (scripts/optimize.py). Tous les choix sont faits sur les 45 volumes
+# de validation ; le test n'est utilisé qu'à l'étape final.
+
+data_config: configs/kaggle/data.yaml
+evaluation_config: configs/kaggle/evaluation.yaml
+cache_dir: data/optim_cache
+results_dir: results/kaggle_optim
+device: auto
+
+# tta : nombre d'orientations moyennées au test (1 = aucune, 2 = + retournement gauche-droite,
+# 4 = + retournements haut-bas et combiné).
+runs:
+  dynunet: {dir: experiments/kaggle_optim/dynunet_seed0, tta: 4, overlap: 0.5, amp: true}
+  unet3d: {dir: experiments/kaggle/unet3d_seed0, tta: 4, overlap: 0.5, amp: true}
+  unet2d_s0: {dir: experiments/kaggle/unet2d_seed0, tta: 2}
+  unet2d_s1: {dir: experiments/kaggle/unet2d_seed1, tta: 2}
+  unet2d_s2: {dir: experiments/kaggle/unet2d_seed2, tta: 2}
+  swt_s0: {dir: experiments/kaggle/wavelet_unet_swt_haar_seed0, tta: 2}
+  swt_s1: {dir: experiments/kaggle/wavelet_unet_swt_haar_seed1, tta: 2}
+  swt_s2: {dir: experiments/kaggle/wavelet_unet_swt_haar_seed2, tta: 2}
+  dwt_s0: {dir: experiments/kaggle/wavelet_unet_dwt_haar_ms_seed0, tta: 2}
+  dwt_s1: {dir: experiments/kaggle/wavelet_unet_dwt_haar_ms_seed1, tta: 2}
+  dwt_s2: {dir: experiments/kaggle/wavelet_unet_dwt_haar_ms_seed2, tta: 2}
+
+# Ensembles candidats : moyenne pondérée des probabilités (poids normalisés).
+ensembles:
+  dynunet: {dynunet: 1}
+  unet3d: {unet3d: 1}
+  dynunet+unet3d: {dynunet: 1, unet3d: 1}
+  unet2d_x3: {unet2d_s0: 1, unet2d_s1: 1, unet2d_s2: 1}
+  swt_x3: {swt_s0: 1, swt_s1: 1, swt_s2: 1}
+  dwt_x3: {dwt_s0: 1, dwt_s1: 1, dwt_s2: 1}
+  2d_x9: {unet2d_s0: 1, unet2d_s1: 1, unet2d_s2: 1, swt_s0: 1, swt_s1: 1, swt_s2: 1,
+          dwt_s0: 1, dwt_s1: 1, dwt_s2: 1}
+  dynunet+2d_x9: {dynunet: 9, unet2d_s0: 1, unet2d_s1: 1, unet2d_s2: 1, swt_s0: 1, swt_s1: 1,
+                  swt_s2: 1, dwt_s0: 1, dwt_s1: 1, dwt_s2: 1}
+  3d+2d_x9: {dynunet: 6, unet3d: 3, unet2d_s0: 1, unet2d_s1: 1, unet2d_s2: 1, swt_s0: 1,
+             swt_s1: 1, swt_s2: 1, dwt_s0: 1, dwt_s1: 1, dwt_s2: 1}
+
+thresholds: [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7]
+min_sizes: [0, 10, 25, 50, 100, 200, 400]
+
+final:
+  # évaluées sur le test en version brute et post-traitée, en plus de la configuration retenue
+  references: [dynunet, unet3d, unet2d_x3, swt_x3, dwt_x3]
+  degradations: [down_x2, down_x4]

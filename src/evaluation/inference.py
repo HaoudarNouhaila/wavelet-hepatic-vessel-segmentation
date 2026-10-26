@@ -40,16 +40,28 @@ def iterate_volume_logits(model, volume: np.ndarray, wavelet: WaveletFeatures | 
         yield range(start, start + len(xs)), logits
 
 
+TTA_FLIPS_2D = [(), (2,), (1,), (1, 2)]  # retournements des axes W et H d'un volume (Z, H, W)
+
+
 def predict_volume(model, volume: np.ndarray, wavelet: WaveletFeatures | None, fill_value: float,
-                   batch_size: int = 8, device="cpu") -> np.ndarray:
-    """Retourne les probabilités softmax (C, Z, H, W), stockées en float16 pour limiter la mémoire."""
-    out = None
-    for idx, logits in iterate_volume_logits(model, volume, wavelet, fill_value, batch_size, device):
-        probs = F.softmax(logits, dim=1).cpu().numpy()
-        if out is None:
-            out = np.zeros((probs.shape[1],) + volume.shape, dtype=np.float16)
-        out[:, idx.start : idx.stop] = probs.transpose(1, 0, 2, 3)
-    return out
+                   batch_size: int = 8, device="cpu", flips=((),)) -> np.ndarray:
+    """Retourne les probabilités softmax (C, Z, H, W), stockées en float16 pour limiter la mémoire.
+
+    Avec plusieurs `flips`, les probabilités sont moyennées sur les versions retournées du volume
+    (augmentation au test) ; les caractéristiques ondelettes sont recalculées sur chaque version.
+    """
+    total = None
+    for dims in flips:
+        view = np.flip(volume, dims) if dims else volume
+        out = None
+        for idx, logits in iterate_volume_logits(model, view, wavelet, fill_value, batch_size, device):
+            probs = F.softmax(logits, dim=1).cpu().numpy()
+            if out is None:
+                out = np.zeros((probs.shape[1],) + volume.shape, dtype=np.float32)
+            out[:, idx.start : idx.stop] = probs.transpose(1, 0, 2, 3)
+        out = np.flip(out, tuple(d + 1 for d in dims)) if dims else out
+        total = out if total is None else total + out
+    return (total / len(flips)).astype(np.float16)
 
 
 def probs_to_original_grid(probs: np.ndarray, original_shape) -> np.ndarray:

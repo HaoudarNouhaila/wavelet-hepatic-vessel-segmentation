@@ -1,0 +1,43 @@
+# DynUNet 3D (architecture de nnU-Net réimplémentée dans MONAI), entraîné sur GPU avec tous les
+# cas annotés. Les quatre premiers niveaux ne sous-échantillonnent que dans le plan, pour tenir
+# compte des coupes épaisses (5 mm le plus souvent).
+#   python scripts/train.py --config configs/kaggle/dynunet.yaml --seed 0 --max-minutes 300
+base: ../unet_3d.yaml
+
+experiment:
+  name: dynunet
+  output_dir: experiments/kaggle_optim
+
+data:
+  split_file: data/splits/split_seed42_full.json
+  stats_file: data/processed_full/intensity_stats.json
+  processed_dir: data/processed_full
+
+model:
+  type: dynunet
+  kernels: [[1, 3, 3], [1, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3]]
+  strides: [[1, 1, 1], [1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2], [1, 2, 2]]
+  filters: [32, 64, 128, 256, 320, 320]
+  res_block: true
+
+training:
+  device: auto
+  patch_size: [32, 192, 192]    # (Z, H, W) ; Z multiple de 4, H et W multiples de 32
+  roi_size: [32, 256, 256]
+  batch_size: 2
+  samples_per_epoch: 500
+  max_epochs: 2000              # la durée est fixée par --max-minutes
+  val_every: 5
+  max_val_cases: 15             # suivi de l'entraînement ; les 45 cas servent à l'optimisation
+  val_overlap: 0.25
+  early_stopping_patience: 1000
+  min_epochs: 0
+  lr: 0.0003
+  weight_decay: 0.00003
+  scheduler: cosine_time
+  lr_min_factor: 0.01
+  amp: true
+  grad_clip: 12
+  noise_prob: 0.15
+  num_workers: 4
+  fg_prob: 0.67

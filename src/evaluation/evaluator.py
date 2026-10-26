@@ -18,7 +18,7 @@ import pandas as pd
 import torch
 
 from src.data.msd import load_case
-from src.evaluation.inference import predict_volume, probs_to_labels, probs_to_original_grid
+from src.evaluation.inference import TTA_FLIPS_2D, predict_volume, probs_to_labels, probs_to_original_grid
 from src.evaluation.metrics import all_metrics
 from src.evaluation.vessel_analysis import centerline_recall_by_radius, component_analysis
 from src.preprocessing.degradation import degrade
@@ -30,23 +30,33 @@ from src.utils import resolve
 CLASS_NAMES = {1: "vessel", 2: "tumour"}
 
 
-def load_run(run_dir: Path, device="cpu", checkpoint: str = "best.pt") -> dict:
-    """Charge un modèle entraîné (2D ou 3D) et sa fonction de prédiction volume -> probabilités."""
+def load_run(run_dir: Path, device="cpu", checkpoint: str = "best.pt", tta_flips: int = 1,
+             overlap: float = 0.25, amp: bool = False) -> dict:
+    """Charge un modèle entraîné (2D ou 3D) et sa fonction de prédiction volume -> probabilités.
+
+    `tta_flips` (1, 2 ou 4 orientations), `overlap` et `amp` ne servent qu'à l'étape
+    d'optimisation ; leurs valeurs par défaut reproduisent l'inférence des premières expériences.
+    """
+    from src.models.unet3d import MODEL_TYPES_3D, TTA_FLIPS_3D, predict_volume_3d
+
     ckpt = torch.load(run_dir / checkpoint, map_location=device, weights_only=False)
     cfg = ckpt["config"]
     stats = json.loads(resolve(cfg["data"]["stats_file"]).read_text(encoding="utf-8"))
     fill = background_value(stats)
-    if cfg["model"].get("type") == "unet3d":
-        from src.models.unet3d import predict_volume_3d
-        from src.training.trainer3d import load_unet3d
-        model, _ = load_unet3d(run_dir / checkpoint, device)
+    if cfg["model"].get("type") in MODEL_TYPES_3D:
+        from src.training.trainer3d import load_model_3d
+        model, _ = load_model_3d(run_dir / checkpoint, device)
         roi = cfg["training"]["roi_size"]
         wavelet = None
-        predict = lambda volume: predict_volume_3d(model, volume, roi, device=device)  # noqa: E731
+        flips = TTA_FLIPS_3D[: max(1, tta_flips)]
+        predict = lambda volume: predict_volume_3d(model, volume, roi, overlap=overlap, device=device,  # noqa: E731
+                                                   amp=amp, flips=flips)
     else:
         model, _ = load_model_from_checkpoint(run_dir / checkpoint, device)
         wavelet = build_wavelet(cfg["model"], resolve(cfg["data"]["wavelet_stats_file"]))
-        predict = lambda volume: predict_volume(model, volume, wavelet, fill, device=device)  # noqa: E731
+        flips = TTA_FLIPS_2D[: max(1, tta_flips)]
+        predict = lambda volume: predict_volume(model, volume, wavelet, fill, device=device,  # noqa: E731
+                                                flips=flips)
     return {
         "name": run_dir.name, "model": model, "cfg": cfg, "stats": stats, "wavelet": wavelet, "fill": fill,
         "epoch": ckpt["epoch"], "model_type": cfg["experiment"]["name"], "seed": cfg["experiment"]["seed"],
